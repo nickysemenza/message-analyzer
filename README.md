@@ -7,7 +7,7 @@
 4. `node auth.js` to auth with facebook and save the state in `appstate.json` (only need to do this once until the cookies expire)
 5. create the SQL tables (schema below, note that utf8mb4 is important for things like emoji)
 6. Scroll down to the end of main.js and run your code from within login method
-
+  
 
 ##SQL Schema
 ```
@@ -51,3 +51,9 @@ CREATE TABLE `facebook_users` (
   UNIQUE KEY `facebook_id` (`facebook_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=998 DEFAULT CHARSET=utf8mb4;
 ```
+
+#TODO
+* [ ] make script automatically download all your threads in a loop
+* [ ] add support for other metadata (changing emoji/color/title) -requires tweaking facebook-chat-api
+* [ ] stop downloading a thread when there are back to back sql duplicate errors, this can be a hacky way of getting a delta update of a thread since the last time we downloaded it
+* [ ] chat titles for 1:1 convos are blank, so maybe have a script hint them based on fbid->name lookup and update that title value for 1:1 threads
