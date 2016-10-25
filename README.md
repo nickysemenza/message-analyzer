@@ -1,13 +1,19 @@
-#Facebook Messenger Chat History Downloader
+#Facebook Messenger Chat History Downloader/ Analyzer
 
-##Howto
-1. clone, cd into directory
-2. npm install
-3. `cp settings.example.js settings.js`, add your own credentials for FB and mysql
+This project consists of a few parts / 'modules'
+* Scraper (node.js) that downloads facebook messages into MySQL
+* Analyzer (python) that does data processing
+* Web (React.js) that displays data nicely
+
+The Scraper code can work on its own if desired.
+
+##Howto run the scraper
+1. clone, cd into project repo
+2. `cp .env.example .env`, add your own credentials for Facebook and MySQL
+3. `cd scraper; npm install`
 4. `node auth.js` to auth with facebook and save the state in `appstate.json` (only need to do this once until the cookies expire)
 5. create the SQL tables (schema below, note that utf8mb4 is important for things like emoji)
-6. Scroll down to the end of main.js and run your code from within login method
-  
+6. Scroll down to the end of main.js and run your code from within login method!
 
 ##SQL Schema
 ```
