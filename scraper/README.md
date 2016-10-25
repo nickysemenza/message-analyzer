@@ -13,7 +13,6 @@
 ```
 CREATE TABLE `facebook_messages` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `type` varchar(100) CHARACTER SET utf8 DEFAULT NULL,
   `sender_name` varchar(25) CHARACTER SET utf8 DEFAULT NULL,
   `sender_id` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
   `body` text,

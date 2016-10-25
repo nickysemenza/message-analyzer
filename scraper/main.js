@@ -104,10 +104,10 @@ function updateThreadDetail(api, thread, start, end, ts) {
 	 		console.log("[updateThreadDetail - "+thread+"] we done");
 
 	 	console.log(hist[0].messageID);
+	 	
 		for(var x in hist) {
 			var each = hist[x];
 			var dbdata = {
-				type: each.type,
 				sender_name: each.senderName,
 				sender_id: each.senderID,
 				body: each.body,
