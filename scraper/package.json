@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "dotenv": "^2.0.0",
     "facebook-chat-api": "github:nickysemenza/facebook-chat-api",
     "mysql": "^2.11.1"
   }

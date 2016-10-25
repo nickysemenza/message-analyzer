@@ -1,9 +1,19 @@
 var login = require("facebook-chat-api");
 var fs    = require("fs");
 var mysql      = require('mysql');
-var connection = mysql.createConnection(require('./settings').mysql);
+require('dotenv').config({path: '../.env'});
+
+var connection = mysql.createConnection(
+{
+	  host     : process.env.mysql_host,
+	  user     : process.env.mysql_user,
+	  password : process.env.mysql_password,
+	  database : process.env.mysql_database,
+	  charset  : 'utf8mb4'
+	});
 
 connection.connect();
+
 
 function test(api) {
 	console.log('test');
