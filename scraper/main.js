@@ -162,7 +162,7 @@ login({appState: JSON.parse(fs.readFileSync('appstate.json', 'utf8'))}, function
     // test(api);
    	// updateThreadsList(api, 0, 1000);
     //updateFriendsList(api);
-    // updateThreadDetail(api, "869042309831501", 0,10000, null);
+    updateThreadDetail(api, "869042309831501", 0,10000, null);
     // updatePeopleList(api);
 });
 
