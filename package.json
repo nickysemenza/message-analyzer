@@ -9,7 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "facebook-chat-api": "github:schmavery/facebook-chat-api",
+    "facebook-chat-api": "github:nickysemenza/facebook-chat-api",
     "mysql": "^2.11.1"
   }
 }

@@ -70,7 +70,7 @@ function updateThreadsList(api, start, end) {
     			name: each.name,
     			message_count: each.messageCount,
     			participant_ids: JSON.stringify(each.participantIDs),
-    			raw: JSON.stringify(each)
+    			raw: JSON.stringify(each.original)
     		};
 			var query = connection.query('INSERT INTO facebook_threads SET ?', dbdata, function(err, result) {});
     	}
