@@ -1,0 +1,6 @@
+click==6.6
+elasticsearch==5.0.0
+PyMySQL==0.7.9
+python-dotenv==0.6.0
+SQLAlchemy==1.1.2
+urllib3==1.18
