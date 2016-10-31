@@ -5,6 +5,7 @@ from elasticsearch import Elasticsearch
 from sqlalchemy import create_engine
 import pymysql.cursors
 load_dotenv(find_dotenv())
+import logging
 
 #Connect to MySQL
 engine = create_engine("mysql+pymysql://"
@@ -32,7 +33,19 @@ settings = {
                 "timestamp": {
                     "type": "date"
                 }
-            }
+            },
+            "dynamic_templates": [
+                {
+                    "subattachment_object_template": {
+                        "path_match": "attachments.subattachments.*",
+                        "mapping": {
+                            "type": "object",
+                            "enabled": "false"
+
+                        }
+                    }
+                }
+            ]
         }
      }
 }
@@ -42,4 +55,9 @@ for x in conn.execute("SELECT raw, message_id from facebook_messages").fetchall(
 	mid = x[1].encode("utf-8")
 	# print raw
 	# print mid
-	es.index(index=index_name, doc_type="facebook-message", id=mid, body=raw)
+	try:
+		es.index(index=index_name, doc_type="facebook-message", id=mid, body=raw)
+	except Exception:
+		# print Exception
+		logging.exception("Something awful happened!")
+		print raw
