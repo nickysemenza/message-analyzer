@@ -46,7 +46,7 @@ df = pd.DataFrame({'ts': column_sent})
 df['year'] = df['ts'].dt.year
 df['month'] = df['ts'].dt.month
 df_sent_count = df.groupby(by=['year', 'month']).count()#.plot(kind="bar")
-df_sent_count.columns = ['sent']
+df_sent_count.columns = ['#sent: 1 person chat']
 
 
 #dataframe for counting received
@@ -54,7 +54,7 @@ df = pd.DataFrame({'ts': column_recv})
 df['year'] = df['ts'].dt.year
 df['month'] = df['ts'].dt.month
 df_recv_count = df.groupby(by=['year', 'month']).count()
-df_recv_count.columns = ['received']
+df_recv_count.columns = ['#received: 1 person chat']
 
 
 #dataframe for counting received, groupchat
@@ -62,14 +62,14 @@ df = pd.DataFrame({'ts': column_sent_groupchat})
 df['year'] = df['ts'].dt.year
 df['month'] = df['ts'].dt.month
 df_sent_count_groupchat = df.groupby(by=['year', 'month']).count()
-df_sent_count_groupchat.columns = ['sent-groupchat']
+df_sent_count_groupchat.columns = ['#sent: groupchat']
 
 #dataframe for counting received, groupchat
 df = pd.DataFrame({'ts': column_recv_groupchat})
 df['year'] = df['ts'].dt.year
 df['month'] = df['ts'].dt.month
 df_recv_count_groupchat = df.groupby(by=['year', 'month']).count()
-df_recv_count_groupchat.columns = ['received-groupchat']
+df_recv_count_groupchat.columns = ['#received: groupchat']
 
 #overlay the two charts
 merged = pd.concat([df_sent_count,df_recv_count,df_recv_count_groupchat,df_sent_count_groupchat],axis=1)
