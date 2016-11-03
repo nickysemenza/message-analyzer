@@ -15,8 +15,17 @@ login({appState: JSON.parse(fs.readFileSync('appstate.json', 'utf8'))}, function
     // test(api);
    	// utils.updateThreadsList(api, 0, 1000);
     //updateFriendsList(api);
-    utils.updateThreadDetail(api, "869042309831501", 0,10000, null);
+    // utils.updateThreadDetail(api, "869042309831501", 0,10000, null);
+    utils.updateThreadDetail(api, "1630448017222903", 0,10000, null);
     // updatePeopleList(api);
+    
+
+    // utils.downloadAllThreads(api);
+    // setInterval( function() { console.log("setint"); utils.downloadAllThreads(api); }, 24000 );
+
+
+
+
 });
 
 

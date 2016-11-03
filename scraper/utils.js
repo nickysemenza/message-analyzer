@@ -59,8 +59,9 @@ function updateThreadsList(api, start, end) {
 	 	console.log("requested "+start+"->"+end+"("+requestedCount+") threads, got "+returnedCount+" threads");
 	 	if(requestedCount==returnedCount)//if not on the last page of results, there will be a full page of 1000
 	 		updateThreadsList(api,start+1000,end+1000)
-	 	else
+	 	else {
 	 		console.log('we done');
+	 	}
     	for(var x in arr) {
     		var each = arr[x];
     		// console.log(each);
@@ -83,6 +84,8 @@ function updateThreadsList(api, start, end) {
 function updateThreadDetail(api, thread, start, end, ts) {
 	api.getThreadHistory(thread, start, end, ts, function callback(err, hist) {
 		var requestedCount = (end-start);
+		if(hist==null)
+			return;
 	 	var returnedCount = hist.length;
 	 	console.log("[updateThreadDetail - "+thread+"] requested "+start+"->"+end+"("+requestedCount+") messages(timestamp="+ts+"), got "+returnedCount+" messages");
 	 	//if we are returned less than requested, that we done
@@ -111,7 +114,7 @@ function updateThreadDetail(api, thread, start, end, ts) {
 					if(err.code != "ER_DUP_ENTRY")
 					console.log(err);
 					else {
-						console.log("bye");
+						// console.log("bye");
 						return;
 					}
 				}
@@ -161,9 +164,25 @@ function uniq(a) {
 }
 
 
+function downloadAllThreads(api) {
+	var blacklist = ["1630448017222903","1329843113706031","869042309831501","b847174376bd46a2919e5d93cd096f1f","1WVMhEhEBihdAWEz7Rak/w","id.257890450924306"]
+	connection.query('select * from facebook_threads where message_count > downloaded_message_count order by message_count asc limit 7', function(err, rows, fields) {
+	    if (err) throw err;
+	    for (var i in rows) {
+	    	var each = rows[i];
+        	var eachID = each.thread_id;
+        	if(blacklist.indexOf(eachID) == -1)
+				updateThreadDetail(api, eachID, 0,10000, null);
+
+	        	
+	    }
+	   
+	});
+}
 module.exports = {
     updateFriendsList: updateFriendsList,
 	updateThreadsList: updateThreadsList,
 	updateThreadDetail: updateThreadDetail,
+	downloadAllThreads: downloadAllThreads,
 	updatePeopleList: updatePeopleList
 };
