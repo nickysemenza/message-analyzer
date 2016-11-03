@@ -30,16 +30,16 @@ def lookupUserByFbId(id):
     except IndexError:
         return "n/a"
 
-
-# for x in conn.execute("SELECT thread_id, name, participant_ids from facebook_threads").fetchall():
-#     if(x['name']==""):
-#         people_ids = json.loads(x['participant_ids'])
-#         people_names = []
-#         #print json.dumps(people, sort_keys=True,indent=4, separators=(',', ': '))
-#         for pid in people_ids:
-#             # print pid
-#             people_names.append(lookupUserByFbId(pid))
-#             # print lookupUserByFbId(pid)
-#         namestring = ",".join(people_names)
-#         conn.execute("UPDATE `facebook_threads` SET `name` = '"+namestring+"' WHERE `thread_id` = '"+str(x['thread_id'])+"'");
+#hint thread names with participant names for 1:1 chats
+for x in conn.execute("SELECT thread_id, name, participant_ids from facebook_threads").fetchall():
+    if(x['name']==""):
+        people_ids = json.loads(x['participant_ids'])
+        people_names = []
+        #print json.dumps(people, sort_keys=True,indent=4, separators=(',', ': '))
+        for pid in people_ids:
+            # print pid
+            people_names.append(lookupUserByFbId(pid))
+            # print lookupUserByFbId(pid)
+        namestring = ",".join(people_names)
+        conn.execute("UPDATE `facebook_threads` SET `name` = '"+namestring+"' WHERE `thread_id` = '"+str(x['thread_id'])+"'");
 
