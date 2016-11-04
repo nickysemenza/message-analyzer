@@ -23,13 +23,16 @@ groupchat_threads = ','.join(groupchat_threads)
 
 sql_base="select timestamp from facebook_messages where"
 sql_addon=""
-sql_addon+="and timestamp > 1356998400"
+sql_addon+=" and timestamp > 1356998400"
 
 res_sent = conn.execute(sql_base+" sender_id = '"+me+"' and thread_id not in ("+groupchat_threads+")"+sql_addon).fetchall()
 res_recv = conn.execute(sql_base+" sender_id != '"+me+"' and thread_id not in ("+groupchat_threads+")"+sql_addon).fetchall()
 
 res_sent_groupchat = conn.execute(sql_base+" sender_id = '"+me+"' and thread_id in ("+groupchat_threads+")"+sql_addon).fetchall()
 res_recv_groupchat = conn.execute(sql_base+" sender_id != '"+me+"' and thread_id in ("+groupchat_threads+")"+sql_addon).fetchall()
+
+
+sadboyz = conn.execute(sql_base+" thread_id = '869042309831501'"+sql_addon).fetchall()
 
 
 #build a numpy array of integers from the sql strings, then convert to datetime
@@ -39,6 +42,7 @@ column_recv = np.array([int(x[0]) for x in res_recv]).astype('datetime64[s]')
 #build a numpy array of integers from the sql strings, then convert to datetime
 column_sent_groupchat = np.array([int(x[0]) for x in res_sent_groupchat]).astype('datetime64[s]')
 column_recv_groupchat = np.array([int(x[0]) for x in res_recv_groupchat]).astype('datetime64[s]')
+sadboyz = np.array([int(x[0]) for x in sadboyz]).astype('datetime64[s]')
 
 
 #dataframe for counting sent
@@ -71,10 +75,21 @@ df['month'] = df['ts'].dt.month
 df_recv_count_groupchat = df.groupby(by=['year', 'month']).count()
 df_recv_count_groupchat.columns = ['#received: groupchat']
 
+#dataframe for counting received, groupchat
+df = pd.DataFrame({'ts': sadboyz})
+df['year'] = df['ts'].dt.year
+df['month'] = df['ts'].dt.month
+df['day'] = df['ts'].dt.day
+sadboyz = df.groupby(by=['year','month', 'day']).count()
+sadboyz.columns = ['sadboyz messages']
+sadboyz.autofmt_xdate()
+sadboyz.plot(kind="bar")
+
+
+
+
 #overlay the two charts
-merged = pd.concat([df_sent_count,df_recv_count,df_recv_count_groupchat,df_sent_count_groupchat],axis=1)
-merged.plot(kind="bar")
-# print merged
-# print list(merged.columns.values)
+# merged = pd.concat([df_sent_count,df_recv_count,df_recv_count_groupchat,df_sent_count_groupchat],axis=1)
+# merged.plot(kind="bar")
 
 plt.show()
