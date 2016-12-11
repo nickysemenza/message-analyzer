@@ -47,6 +47,23 @@ function saveFacebookUser(each) {
 			});
 }
 /**
+* saves a facebook thread into the threads table (helper function)
+*/
+function saveFacebookThreadInfo(each) {
+	var dbdata  = { 
+    			thread_id: each.threadID,
+    			name: each.name,
+    			message_count: each.messageCount,
+    			participant_ids: JSON.stringify(each.participantIDs),
+    			num_participants: each.numParticipants,
+    			raw: JSON.stringify(each),
+    		};
+	var query = connection.query('INSERT INTO facebook_threads SET ?', dbdata, function(err, result) {
+		if(err) console.log(err);
+		// console.log(result);
+	});
+}
+/**
 * updates the facebook_threads table with all of your message threads
 * 	this works in batches of 1000, and is faux-recursive, call it with:
 * 	updateThreadsList(api, 0, 1000); and it will go through them all
@@ -63,17 +80,7 @@ function updateThreadsList(api, start, end) {
 	 		console.log('we done');
 	 	}
     	for(var x in arr) {
-    		var each = arr[x];
-    		// console.log(each);
-    		var dbdata  = { 
-    			thread_id: each.threadID,
-    			name: each.name,
-    			message_count: each.messageCount,
-    			participant_ids: JSON.stringify(each.participantIDs),
-    			num_participants: each.numParticipants,
-    			raw: JSON.stringify(each),
-    		};
-			var query = connection.query('INSERT INTO facebook_threads SET ?', dbdata, function(err, result) {});
+    		saveFacebookThreadInfo(arr[x]);
     	}
     })
 }
