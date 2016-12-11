@@ -7,7 +7,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from collections import Counter
 #Connect to MySQL
-engine = create_engine("mysql+pymysql://"
+engine = create_engine(os.environ.get("mysql_python_adapter")
 	+os.environ.get("mysql_user")
 	+":"+os.environ.get("mysql_password")
 	+"@"+os.environ.get("mysql_host")

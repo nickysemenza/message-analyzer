@@ -30,22 +30,20 @@ CREATE TABLE `facebook_messages` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `message_id` (`message_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=264923 DEFAULT CHARSET=utf8mb4;
-```
 
-```
 CREATE TABLE `facebook_threads` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `thread_id` varchar(255) CHARACTER SET utf8 NOT NULL DEFAULT '',
-  `name` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `thread_id` varchar(255) NOT NULL DEFAULT '',
+  `name` varchar(999) DEFAULT NULL,
   `message_count` int(11) DEFAULT NULL,
-  `participant_ids` text CHARACTER SET utf8,
+  `downloaded_message_count` int(11) DEFAULT '0',
+  `participant_ids` text,
+  `num_participants` int(11) DEFAULT NULL,
   `raw` text,
   PRIMARY KEY (`id`),
   UNIQUE KEY `thread_id` (`thread_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3079 DEFAULT CHARSET=utf8mb4;
-```
+) ENGINE=InnoDB AUTO_INCREMENT=14601 DEFAULT CHARSET=utf8mb4;
 
-```
 CREATE TABLE `facebook_users` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `facebook_id` varchar(100) DEFAULT NULL,
