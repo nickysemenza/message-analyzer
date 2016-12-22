@@ -22,7 +22,7 @@ for x in conn.execute("""SELECT DISTINCT thread_id,
                          ORDER BY subtotal DESC
                       """).fetchall():
     conn.execute("UPDATE `facebook_threads` SET `downloaded_message_count` = '"+str(x['subtotal'])+"' WHERE `thread_id` = '"+str(x['thread_id'])+"'");
-print "downloaded_message_count updated!"
+print("downloaded_message_count updated!")
 
 def lookupUserByFbId(id):
     try: 

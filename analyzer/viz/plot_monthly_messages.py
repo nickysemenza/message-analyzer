@@ -36,16 +36,14 @@ sadboyz = conn.execute(sql_base+" thread_id = '869042309831501'"+sql_addon).fetc
 
 
 #build a numpy array of integers from the sql strings, then convert to datetime
-column_sent = np.array([int(x[0]) for x in res_sent]).astype('datetime64[s]')
-column_recv = np.array([int(x[0]) for x in res_recv]).astype('datetime64[s]')
-
-#build a numpy array of integers from the sql strings, then convert to datetime
+column_sent = 			np.array([int(x[0]) for x in res_sent]).astype('datetime64[s]')
+column_recv = 			np.array([int(x[0]) for x in res_recv]).astype('datetime64[s]')
 column_sent_groupchat = np.array([int(x[0]) for x in res_sent_groupchat]).astype('datetime64[s]')
 column_recv_groupchat = np.array([int(x[0]) for x in res_recv_groupchat]).astype('datetime64[s]')
-sadboyz = np.array([int(x[0]) for x in sadboyz]).astype('datetime64[s]')
+sadboyz = 				np.array([int(x[0]) for x in sadboyz]).astype('datetime64[s]')
 
 
-#dataframe for counting sent
+#dataframe for counting sent, solo
 df = pd.DataFrame({'ts': column_sent})
 df['year'] = df['ts'].dt.year
 df['month'] = df['ts'].dt.month
@@ -53,7 +51,7 @@ df_sent_count = df.groupby(by=['year', 'month']).count()#.plot(kind="bar")
 df_sent_count.columns = ['#sent: 1 person chat']
 
 
-#dataframe for counting received
+#dataframe for counting received, solo
 df = pd.DataFrame({'ts': column_recv})
 df['year'] = df['ts'].dt.year
 df['month'] = df['ts'].dt.month
@@ -61,7 +59,7 @@ df_recv_count = df.groupby(by=['year', 'month']).count()
 df_recv_count.columns = ['#received: 1 person chat']
 
 
-#dataframe for counting received, groupchat
+#dataframe for counting sent, groupchat
 df = pd.DataFrame({'ts': column_sent_groupchat})
 df['year'] = df['ts'].dt.year
 df['month'] = df['ts'].dt.month
@@ -75,7 +73,7 @@ df['month'] = df['ts'].dt.month
 df_recv_count_groupchat = df.groupby(by=['year', 'month']).count()
 df_recv_count_groupchat.columns = ['#received: groupchat']
 
-#dataframe for counting received, groupchat
+#dataframe for counting sadboyz
 df = pd.DataFrame({'ts': sadboyz})
 df['year'] = df['ts'].dt.year
 df['month'] = df['ts'].dt.month
