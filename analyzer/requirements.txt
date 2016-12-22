@@ -4,3 +4,6 @@ PyMySQL==0.7.9
 python-dotenv==0.6.0
 SQLAlchemy==1.1.2
 urllib3==1.18
+matplotlib==1.5.3
+numpy==1.11.3
+pandas==0.19.1
