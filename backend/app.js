@@ -10,7 +10,7 @@ var app = express();
 
 // view engine setup
 // app.set('views', path.join(__dirname, 'views'));
-// app.set('view engine', 'jade');
+// app.set('view engine', 'text');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(__dirname + '/public/favicon.ico'));
@@ -35,8 +35,8 @@ app.use(function(req, res, next) {
 // error handler
 // no stacktraces leaked to user unless in development environment
 app.use(function(err, req, res, next) {
-  res.status(err.status || 500);
-  res.render('error', {
+  // res.status(err.status || 500);
+  res.render({
     message: err.message,
     error: (app.get('env') === 'development') ? err : {}
   });

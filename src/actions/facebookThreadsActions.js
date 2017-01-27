@@ -29,3 +29,36 @@ function receiveThreads (json) {
     receivedAt: Date.now()
   };
 }
+
+
+export const REQUEST_THREAD_MESSAGES = 'REQUEST_THREAD_MESSAGES';
+export const RECEIVE_THREAD_MESSAGES = 'RECEIVE_THREAD_MESSAGES';
+
+export function fetchThreadMessages (thread_id) {
+  return (dispatch) => {
+    dispatch(requestThreadMessages(thread_id));
+    return fetch(`http://localhost:3003/facebook/threads/${thread_id}/messages`)
+      .then((response) => response.json())
+      .then((json) => dispatch(receiveThreadMessages(thread_id, json)));
+  };
+}
+
+function requestThreadMessages (thread_id) {
+  console.log("hi");
+  return {
+    type: REQUEST_THREAD_MESSAGES,
+    thread_id
+  };
+}
+
+function receiveThreadMessages (thread_id, json) {
+  if ('error' in json) {
+    json = null;
+  }
+  return {
+    type: RECEIVE_THREAD_MESSAGES,
+    messages: json,
+    thread_id,
+    receivedAt: Date.now()
+  };
+}

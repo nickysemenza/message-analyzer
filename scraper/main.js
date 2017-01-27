@@ -13,9 +13,9 @@ function test(api) {
 login({appState: JSON.parse(fs.readFileSync('appstate.json', 'utf8'))}, function callback (err, api) {
     if(err) return console.error(err);
     // test(api);
-   	utils.updateThreadsList(api, 0, 1000);
+   	// utils.updateThreadsList(api, 0, 1000);
     // utils.updateFriendsList(api);
-    // utils.updateThreadDetail(api, "869042309831501", 0,10000, null);
+    utils.updateThreadDetail(api, "1116429422", 0,10000, null);
     // utils.updateThreadDetail(api, "100001080090928", 0,10000, null);
     // utils.updatePeopleList(api);
 

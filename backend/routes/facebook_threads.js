@@ -1,13 +1,13 @@
-var models  = require('../models');
-var express = require('express');
-var router  = express.Router();
+let models  = require('../models');
+let express = require('express');
+let router  = express.Router();
 
 
-router.get('/', function(req, res) {
+router.get('/', (req, res) => {
   models.FacebookThread.findAll()
-    .then(function(users) {
-    res.json(users);
-  });
+    .then(threads => {
+      res.json(threads);
+    });
 });
 
 // router.post('/create', function(req, res) {
@@ -18,15 +18,17 @@ router.get('/', function(req, res) {
 //   });
 // });
 //
-// router.get('/:user_id/destroy', function(req, res) {
-//   models.User.destroy({
-//     where: {
-//       id: req.params.user_id
-//     }
-//   }).then(function() {
-//     res.redirect('/');
-//   });
-// });
+router.get('/:thread_id/messages', (req, res) => {
+  console.log(req.params);
+  models.FacebookMessage.findAll({
+    where: {
+      thread_id: req.params.thread_id
+    }
+  }).then(thread => {
+    res.send(thread);
+  });
+});
+
 //
 // router.post('/:user_id/tasks/create', function (req, res) {
 //   models.Task.create({
@@ -48,4 +50,4 @@ router.get('/', function(req, res) {
 // });
 
 
-module.exports = router;
+module.exports =  router;
