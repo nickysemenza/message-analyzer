@@ -14,7 +14,7 @@ export default class FacebookThreadsList extends Component {
     return (<div>
         <button onClick={this.props.loadData}>Reload Data</button>
         <hr/>
-        <BootstrapTable data={threadList} striped={true} hover={true}>
+        <BootstrapTable data={threadList} striped={true} hover={true} pagination>
           <TableHeaderColumn dataField="id" width='60' isKey={true} dataSort={true}>ID</TableHeaderColumn>
           <TableHeaderColumn dataField="thread_id" width='170' dataSort={true}>Thread ID</TableHeaderColumn>
           <TableHeaderColumn dataField="name" dataSort={true}>Thread Name</TableHeaderColumn>
