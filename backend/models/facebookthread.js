@@ -1,6 +1,6 @@
 'use strict';
 module.exports = function(sequelize, DataTypes) {
-  var FacebookThread = sequelize.define('FacebookThread', {
+  let FacebookThread = sequelize.define('FacebookThread', {
     thread_id: DataTypes.STRING,
     name: DataTypes.STRING,
     message_count: DataTypes.INTEGER,

@@ -16,6 +16,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     dispatch(fetchThreadMessages(ownProps.thread_id));
   },
   thread_id: ownProps.thread_id
-}};
+};};
 
 export default connect(mapStateToProps, mapDispatchToProps)(FacebookThreadView);

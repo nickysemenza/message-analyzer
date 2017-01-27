@@ -7,6 +7,6 @@ router.get('/', function(req, res) {
   models.FacebookUser.findAll()
     .then(function(users) {
     res.json(users);
-  })
+  });
 });
 module.exports = router;

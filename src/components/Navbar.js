@@ -17,8 +17,8 @@ export default class Header extends Component {
           <Nav>
             <NavItem eventKey={1} href="#">Dashboard</NavItem>
             <NavDropdown eventKey={3} title="Facebook" id="basic-nav-dropdown">
-              <LinkContainer to='/facebook/threads'><MenuItem eventKey={3.1}>Threads</MenuItem></LinkContainer>
-              <LinkContainer to='/facebook/users'><MenuItem eventKey={3.2}>Users</MenuItem></LinkContainer>
+              <LinkContainer to="/facebook/threads"><MenuItem eventKey={3.1}>Threads</MenuItem></LinkContainer>
+              <LinkContainer to="/facebook/users"><MenuItem eventKey={3.2}>Users</MenuItem></LinkContainer>
               <MenuItem divider />
               <MenuItem eventKey={3.3}>Separated link</MenuItem>
             </NavDropdown>

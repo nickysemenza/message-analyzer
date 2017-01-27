@@ -1,6 +1,6 @@
-var models  = require('../models');
-var express = require('express');
-var router  = express.Router();
+let models  = require('../models');
+let express = require('express');
+let router  = express.Router();
 
 router.get('/', function(req, res) {
   res.json("hi");

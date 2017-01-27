@@ -44,7 +44,6 @@ export function fetchThreadMessages (thread_id) {
 }
 
 function requestThreadMessages (thread_id) {
-  console.log("hi");
   return {
     type: REQUEST_THREAD_MESSAGES,
     thread_id

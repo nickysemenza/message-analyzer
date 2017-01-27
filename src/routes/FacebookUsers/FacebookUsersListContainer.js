@@ -1,4 +1,3 @@
-import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchUsers } from '../../actions/facebookUsersActions';
 import FacebookUsersList from './FacebookUsersList';
@@ -9,7 +8,7 @@ function mapStateToProps (state) {
   };
 }
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
+const mapDispatchToProps = (dispatch) => ({
   loadData: () => {
     dispatch(fetchUsers());
   }
