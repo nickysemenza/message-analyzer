@@ -64,7 +64,7 @@ width = 0.9
 
 fig, ax = plt.subplots(nrows=2,ncols=1)
 
-print ax
+print (ax)
 
 ax[0].bar(indexes_sent, word_counts_sent, width)
 ax[0].legend(["sent messages"])

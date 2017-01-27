@@ -16,6 +16,36 @@ export default class FacebookThreadView extends Component {
       data1.push({key: c, y:counts[c]});
     }
 
+
+
+    let datum = [{
+      key: "Cumulative Return",
+      values: [
+        {
+          "label" : new Date() ,
+          "value" : 29.765957771107
+        } ,
+        {
+          "label" : new Date(32) ,
+          "value" : 0.19434030906893
+        }
+      ]
+    },
+      {
+        key: "hayy Return",
+        values: [
+          {
+            "label" : new Date() ,
+            "value" : 44
+          } ,
+          {
+            "label" : "B" ,
+            "value" : 0
+          }
+        ]
+      }
+    ];
+
     const options = {
       sizePerPageList: [ {
         text: '10', value: 10
@@ -41,6 +71,20 @@ export default class FacebookThreadView extends Component {
         <button onClick={this.props.loadData}>Reload Data</button>
 
         <div><pre>{JSON.stringify(threadObj ? threadObj.stats : [] , null, 2) }</pre></div>
+
+
+        <NVD3Chart
+          tooltip={false}
+          id="charta"
+          width={900}
+          height={700}
+          type="multiBarChart"
+          datum={datum}
+          x="label"
+          y="value"
+          xAxis={{tickFormat: function(d) { return d3.time.format('%b %d %y')(new Date(d)); }}}
+        />
+
 
         <NVD3Chart
           tooltip={false}
