@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchThreads } from '../../actions/threadsActions';
+import { fetchThreads } from '../../actions/facebookThreadsActions';
 import FacebookThreadsList from './FacebookThreadsList';
 
 function mapStateToProps (state) {
   return {
-    threads: state.threads
+    threads: state.facebookThreads
   };
 }
 

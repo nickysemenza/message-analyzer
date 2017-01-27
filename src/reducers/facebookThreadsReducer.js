@@ -1,7 +1,7 @@
 import {
   REQUEST_THREADS,
   RECEIVE_THREADS
-} from '../actions/threadsActions';
+} from '../actions/facebookThreadsActions';
 
 const INITIAL_STATE = { threads: null, lastUpdated: null, loading: false };
 

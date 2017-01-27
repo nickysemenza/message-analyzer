@@ -1,7 +1,7 @@
 'use strict';
 module.exports = function(sequelize, DataTypes) {
   var FacebookUser = sequelize.define('FacebookUser', {
-    faecbook_id: DataTypes.STRING,
+    facebook_id: DataTypes.STRING,
     first_name: DataTypes.STRING,
     full_name: DataTypes.STRING,
     raw: DataTypes.TEXT

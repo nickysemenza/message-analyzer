@@ -8,7 +8,7 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      faecbook_id: {
+      facebook_id: {
         type: Sequelize.STRING
       },
       first_name: {

@@ -6,7 +6,7 @@ export const RECEIVE_THREADS = 'RECEIVE_THREADS';
 export function fetchThreads () {
   return (dispatch) => {
     dispatch(requestThreads());
-    return fetch(`http://localhost:3003/facebook_threads`)
+    return fetch(`http://localhost:3003/facebook/threads`)
     // return fetch(`${API_BASE_URL}/threads`)
       .then((response) => response.json())
       .then((json) => dispatch(receiveThreads(json)));

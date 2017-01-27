@@ -50,14 +50,17 @@ function saveFacebookUser(each) {
 * saves a facebook thread into the threads table (helper function)
 */
 function saveFacebookThreadInfo(each) {
-	var dbdata  = { 
+  //todo: if data exists
+	var dbdata  = {
     			thread_id: each.threadID,
     			name: each.name,
     			message_count: each.messageCount,
+    			downloaded_message_count: 0,
     			participant_ids: JSON.stringify(each.participantIDs),
-    			num_participants: each.numParticipants,
+    			num_participants: each.participantIDs.length,
     			raw: JSON.stringify(each),
     		};
+	console.log(dbdata);
 	var query = connection.query('INSERT INTO facebook_threads SET ?', dbdata, function(err, result) {
 		if(err) console.log(err);
 		// console.log(result);
@@ -104,7 +107,7 @@ function updateThreadDetail(api, thread, start, end, ts) {
 	 		console.log("[updateThreadDetail - "+thread+"] we done");
 
 	 	console.log(hist[0].messageID);
-	 	
+
 		for(var x in hist) {
 			var each = hist[x];
 			var dbdata = {
@@ -182,9 +185,9 @@ function downloadAllThreads(api) {
         	if(blacklist.indexOf(eachID) == -1)
 				updateThreadDetail(api, eachID, 0,10000, null);
 
-	        	
+
 	    }
-	   
+
 	});
 }
 module.exports = {

@@ -1,9 +1,9 @@
 import { combineReducers } from 'redux';
-import threads from './threadsReducer';
+import facebookThreads from './facebookThreadsReducer';
 import {routerReducer} from 'react-router-redux';
 
 const rootReducer = combineReducers({
-  threads,
+  facebookThreads,
   routing: routerReducer
 });
 

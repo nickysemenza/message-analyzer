@@ -6,9 +6,6 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var cors = require('cors');
 
-var routes = require('./routes/index');
-var facebook_threads  = require('./routes/facebook_threads');
-
 var app = express();
 
 // view engine setup
@@ -24,8 +21,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', routes);
-app.use('/facebook_threads', facebook_threads);
+app.use('/', require('./routes/index'));
+app.use('/facebook/threads', require('./routes/facebook_threads'));
+app.use('/facebook/users', require('./routes/facebook_users'));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

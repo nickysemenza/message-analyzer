@@ -4,7 +4,7 @@ import FacebookThreadsListContainer from './FacebookThreadsListContainer';
 class FacebookThreadsListPage extends Component {
   render () {
     return (
-      <div>
+      <div className="container">
         {/*<HeaderContainer />*/}
         <FacebookThreadsListContainer />
       </div>

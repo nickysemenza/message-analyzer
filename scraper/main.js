@@ -14,10 +14,10 @@ login({appState: JSON.parse(fs.readFileSync('appstate.json', 'utf8'))}, function
     if(err) return console.error(err);
     // test(api);
    	utils.updateThreadsList(api, 0, 1000);
-    //updateFriendsList(api);
+    // utils.updateFriendsList(api);
     // utils.updateThreadDetail(api, "869042309831501", 0,10000, null);
     // utils.updateThreadDetail(api, "100001080090928", 0,10000, null);
-    // updatePeopleList(api);
+    // utils.updatePeopleList(api);
 
 
     // utils.downloadAllThreads(api);
