@@ -2,6 +2,9 @@ let models  = require('../models');
 let express = require('express');
 let router  = express.Router();
 
+var kue = require('kue')
+  , queue = kue.createQueue();
+
 
 router.get('/', (req, res) => {
   models.FacebookThread.findAll()
@@ -25,7 +28,11 @@ router.get('/:thread_id/messages', (req, res) => {
       thread_id: req.params.thread_id
     }
   }).then(thread => {
-    res.send(thread);
+    var job = queue.create('thread-download', {
+      thread_id: req.params.thread_id}).save( function(err){
+      if( !err ) console.log( job.id );
+    });
+    res.send(thread.slice(0,9999));
   });
 });
 

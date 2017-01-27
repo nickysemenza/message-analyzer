@@ -4,7 +4,7 @@ import FacebookThreadViewContainer from './FacebookThreadViewContainer';
 class FacebookThreadViewPage extends Component {
   render () {
     return (
-      <div className="container">
+      <div className="container-fluid">
         {/*<HeaderContainer />*/}
         <FacebookThreadViewContainer thread_id={this.props.params.thread_id} />
       </div>

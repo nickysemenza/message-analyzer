@@ -16,6 +16,25 @@ export default class FacebookThreadView extends Component {
       data1.push({key: c, y:counts[c]});
     }
 
+    const options = {
+      sizePerPageList: [ {
+        text: '10', value: 10
+      }, {
+        text: '50', value: 500
+      },{
+        text: '500', value: 500
+      } ], // you can change the dropdown list for size per page
+      sizePerPage: 10  // which size per page you want to locate as default
+      // pageStartIndex: 0, // where to start counting the pages
+      // paginationSize: 3,  // the pagination bar size.
+      // prePage: 'Prev', // Previous page button text
+      // nextPage: 'Next', // Next page button text
+      // firstPage: 'First', // First page button text
+      // lastPage: 'Last', // Last page button text
+      // paginationShowsTotal: this.renderShowsTotal  // Accept bool or function
+      // hideSizePerPage: true > You can hide the dropdown for sizePerPage
+    };
+
     return (<div>
         <h1>Viewing thread {this.props.thread_id}</h1>z
         {messages.length}
@@ -34,7 +53,7 @@ export default class FacebookThreadView extends Component {
           y="y"
         />
 
-        <BootstrapTable data={messages} striped={true} hover={true} pagination>
+        <BootstrapTable data={messages} striped={true} hover={true} pagination options={options}>
           <TableHeaderColumn dataField="id" width="40" isKey={true} dataSort={true}>ID</TableHeaderColumn>
           <TableHeaderColumn dataField="thread_id" width="200" dataSort={true}>Thread ID</TableHeaderColumn>
           <TableHeaderColumn dataField="sender_name" width="250" dataSort={true}>Sender Name</TableHeaderColumn>
