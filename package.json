@@ -33,6 +33,7 @@
   "license": "MIT",
   "dependencies": {
     "body-parser": "^1.16.0",
+    "chart.js": "^2.4.0",
     "cookie-parser": "^1.4.3",
     "cors": "^2.8.1",
     "dotenv": "^2.0.0",
@@ -42,7 +43,9 @@
     "object-assign": "4.1.0",
     "react": "15.4.1",
     "react-bootstrap": "^0.30.7",
-    "react-bootstrap-table": "3.0.0-beta.2",
+    "react-bootstrap-table": "3.0.0-beta.4",
+    "react-chartjs-2": "^2.0.0",
+    "react-d3": "^0.4.0",
     "react-dom": "15.4.1",
     "react-redux": "5.0.1",
     "react-router": "3.0.0",

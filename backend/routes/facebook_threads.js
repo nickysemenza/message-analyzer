@@ -29,6 +29,22 @@ router.get('/:thread_id/messages', (req, res) => {
   });
 });
 
+router.get('/:thread_id/stats', (req, res) => {
+  console.log(req.params);
+  models.FacebookMessage.findAll({
+    where: {
+      thread_id: req.params.thread_id
+    }
+  }).then(thread => {
+    // let times = thread.map(item =>{ return {timestamp: item.timestamp, name: item.sender_name}});
+    let counts = {};
+    thread.forEach(msg => {
+      counts[msg.sender_name] = ++counts[msg.sender_name] || 1;
+    });
+    res.send({count: thread.length, counts});
+  });
+});
+
 //
 // router.post('/:user_id/tasks/create', function (req, res) {
 //   models.Task.create({
