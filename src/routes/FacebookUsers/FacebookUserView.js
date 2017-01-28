@@ -7,12 +7,12 @@ export default class FacebookUserView extends Component {
   }
   render () {
     const threads = this.props.user_threads ? this.props.user_threads[this.props.user_id] : null;
-
+    const numThreads = threads && threads.threads ? threads.threads.length : 0;
 
     return (<div>
         <h1>Viewing facebook user {this.props.user_id}</h1>
-        <h2>{threads.threads.length} threads</h2>
-        <FacebookThreadsList threads={threads}/>
+        <h2>{numThreads} threads</h2>
+        <FacebookThreadsList threads={threads} loadData={this.props.loadData}/>
         <div><pre>{JSON.stringify(threads ? threads : [] , null, 2) }</pre></div>
        derp
 
