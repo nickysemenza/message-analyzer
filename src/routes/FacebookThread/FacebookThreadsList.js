@@ -4,7 +4,8 @@ import { Router, Route, Link, browserHistory } from 'react-router';
 
 export default class FacebookThreadsList extends Component {
   componentDidMount () {
-    this.props.loadData();
+    if(this.props.loadData)
+      this.props.loadData();
   }
   colFormatter = (cell, row) => {
     return (
