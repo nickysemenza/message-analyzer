@@ -5,10 +5,10 @@ var utils = require('./utils');
 var kue = require('kue')
   , queue = kue.createQueue();
 
-var job = queue.create('thread-download', {
-  thread_id: '1116429422'}).save( function(err){
-  if( !err ) console.log( job.id );
-});
+// var job = queue.create('thread-download', {
+//   thread_id: '1116429422'}).save( function(err){
+//   if( !err ) console.log( job.id );
+// });
 
 
 function test(api) {
@@ -25,7 +25,7 @@ login({appState: JSON.parse(fs.readFileSync('appstate.json', 'utf8'))}, function
     // test(api);
    	// utils.updateThreadsList(api, 0, 1000);
     // utils.updateFriendsList(api);
-    utils.updateThreadDetail(api, "1116429422", 0,10000, null);
+    utils.updateThreadDetail(api, "838812462886665", 0,10000, null);
     // utils.updateThreadDetail(api, "100001080090928", 0,10000, null);
     // utils.updatePeopleList(api);
 
