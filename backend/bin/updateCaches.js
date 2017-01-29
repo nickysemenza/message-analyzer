@@ -2,7 +2,7 @@ const debug = require('debug')('express-sequelize');
 const models = require('../models');
 /* eslint-disable no-console */
 
-models.sequelize.sync().then(() => {
+// models.sequelize.sync().then(() => {
 
   const countsQuery = 'SELECT DISTINCT thread_id, COUNT(thread_id) AS subtotal FROM facebook_messages GROUP BY thread_id ORDER BY subtotal DESC';
   let updateChatCounts = new Promise((resolveO, reject) => {
@@ -26,4 +26,4 @@ models.sequelize.sync().then(() => {
     process.exit(0);
   });
 
-});
+// });

@@ -12,16 +12,6 @@ let kue = require('kue')
 //   if( !err ) console.log( job.id );
 // });
 
-
-function test(api) {
-	console.log('test');
-    // api.getThreadHistory("869042309831501", 0, 10, null, function(err, history)
-    // {
-    //     if(err) return console.error(err);
-    //     console.log(history[1]);
-    // });
-}
-
 login({appState: JSON.parse(fs.readFileSync('appstate.json', 'utf8'))}, (err, api) => {
     if(err) return console.error(err);
     // utils.updateFriendsList(api).then(a=>{console.log('friend list updated: ',a)});
@@ -30,7 +20,7 @@ login({appState: JSON.parse(fs.readFileSync('appstate.json', 'utf8'))}, (err, ap
 
     utils.updateThreadHistory(api, "100000154295985")
     // utils.updateThreadHistory(api, "838812462886665")
-      .then(a=>{console.log('thread updated',a)}).catch(a=>console.log('oops',a));
+      .then(a=>{console.log('thread updated',a);}).catch(a=>console.log('oops',a));
     //
     //
     // queue.process('thread-download', function(job, done){
