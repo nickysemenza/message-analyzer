@@ -156,29 +156,29 @@ function updateThreadDetail(api, thread, start, end, ts, resolve, reject) {
 
 function updatePeopleList(api) {
 
-  connection.query('SELECT * FROM facebook_threads', (err, rows, fields) => {
-    if (err) throw err;
-    let other_thread_participants = [];
-    for (let i in rows) {
-      let each = rows[i];
-      let people = JSON.parse(each.participant_ids);
-      for (let a in people) {
-        let person = people[a];
-        other_thread_participants.push(person);
-      }
-    }
-    console.log("you have been in threads with " + uniq(other_thread_participants).length + " people");
-
-    api.getUserInfo(uniq(other_thread_participants), (err, data) => {
-      if (err) return console.error(err);
-      console.log(Object.keys(data).length + " people returned from API");
-      for (let key in data) {
-        if (data.hasOwnProperty(key)) {
-          data[key].userID = key;
-          data[key].fullName = data[key].name; //hacky..meh
-          saveFacebookUser(data[key]);
+  return new Promise((resolve, reject) => {
+    connection.query('SELECT * FROM facebook_threads', (err, rows, fields) => {
+      if (err) throw err;
+      let other_thread_participants = [];
+      for (let i in rows) {
+        let each = rows[i];
+        let people = JSON.parse(each.participant_ids);
+        for (let a in people) {
+          let person = people[a];
+          other_thread_participants.push(person);
         }
       }
+      api.getUserInfo(uniq(other_thread_participants), (err, data) => {
+        if (err) return console.error(err);
+        let savingPromises = Object.keys(data).map((key, index) => {
+          if (data.hasOwnProperty(key)) {
+            data[key].userID = key;
+            data[key].fullName = data[key].name; //hacky..meh
+            return saveFacebookUser(data[key]);
+          }
+        });
+        Promise.all(savingPromises).then(()=>resolve({num_people: Object.keys(data).length}));
+      });
     });
   });
 }
