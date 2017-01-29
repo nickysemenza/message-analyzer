@@ -42,6 +42,7 @@
     "kue": "^0.11.5",
     "morgan": "^1.7.0",
     "mysql": "^2.11.1",
+    "node-redis": "^0.1.7",
     "object-assign": "4.1.0",
     "react": "15.4.1",
     "react-bootstrap": "^0.30.7",

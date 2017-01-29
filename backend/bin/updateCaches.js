@@ -5,9 +5,12 @@ const models = require('../models');
 let utils = require('.././utils');
 
 
-let chatCounts = utils.updateChatCounts();
+let a = utils.updateUserMessageCounts();
+
+// let chatCounts = utils.updateChatCounts();
 let hint = utils.hintThreadNames();
-  Promise.all([hint, chatCounts]).then(() => {
+  Promise.all([a,hint]).then(() => {
+    console.log("done");
     process.exit(0);
   });
 

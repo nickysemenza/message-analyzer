@@ -1,6 +1,13 @@
 let mysql = require('mysql');
 /* eslint-disable no-console */
 const models = require('./models');
+const bluebird = require('bluebird');
+let Promise = require('bluebird');
+
+let redis = require("redis"),
+  client = redis.createClient();
+bluebird.promisifyAll(redis.RedisClient.prototype);
+bluebird.promisifyAll(redis.Multi.prototype);
 
 require('dotenv').config({
   path: '../.env'
@@ -244,43 +251,91 @@ function updateChatCounts() {
   });
 }
 
+function updateUserMessageCounts() {
+  return new Promise((resolve, reject)=> {
+
+    const countsQuery = 'SELECT sender_name, thread_id, COUNT(sender_name) as num FROM facebook_messages GROUP BY sender_name, thread_id';
+    models.sequelize.query(countsQuery).spread((results) => {
+      let counts = {};
+      results.forEach(row=>{
+        if(!counts[row.thread_id]){
+          counts[row.thread_id] = {};
+        }
+
+        let currVal = counts[row.thread_id][row.sender_name] ? counts[row.thread_id][row.sender_name] : 0;
+        counts[row.thread_id][row.sender_name] = currVal+row.num;
+
+      });
+      console.log(counts);
+
+      let p = [];
+      for(let key in counts) {
+        p.push(client.hsetAsync("thread:"+key, ["stats", JSON.stringify(counts[key])]));
+      }
+
+      Promise.all(p).then(()=>{resolve();});
+    });
+  });
+}
+
 function hintThreadNames() {
   return new Promise((resolve, reject) => {
     models.FacebookThread.findAll().then(threads => {
       let p = threads.map(thread => {
-        // console.log(thread.thread_id);
-        let peopleIDs = JSON.parse(thread.participant_ids);
-        // console.log(peopleIDs);
-        let names = peopleIDs.map(p => getNameFromFacebookID(p));
-        return Promise.all(names).then(n=> {
-          let nameString = n.join(' & ').substr(0,200);
-          console.log(nameString);
+        return Promise.all(JSON.parse(thread.participant_ids).map(p => getNameFromFacebookID(p))).then(namesArray=> {
           return new Promise((resolveU, rejectU) => {
             if(thread.name=='')
-              thread.update({participant_names: JSON.stringify(n), name: nameString}).then(resolveU());
+              thread.update({participant_names: JSON.stringify(namesArray), name: namesArray.join(' & ').substr(0,200)}).then(()=>{resolveU()});
             else
-              thread.update({participant_names: JSON.stringify(n)}).then(resolveU());
+              thread.update({participant_names: JSON.stringify(namesArray)}).then(()=>{resolveU()});
           });
         });
-
-
       });
-      // Promise.all(p).then(resolve());
-      // setTimeout(()=>{resolve()},3000);
+      //this is wrong..
+      Promise.all(p).then(() => {console.log("aaaa"); resolve();});
     });
-
   })
 }
+
+// function hintThreadNames() {
+//   return new Promise((resolve, reject) => {
+//     models.FacebookThread.findAll().then(threads => {
+//       let p = threads.map(thread => {
+//         return new Promise((resolve1, reject1) => {
+//           let n = Promise.all(JSON.parse(thread.participant_ids).map(p => getNameFromFacebookID(p))).then(namesArray => {
+//             return new Promise((resolveU, rejectU) => {
+//               if (thread.name == '')
+//                 thread.update({
+//                   participant_names: JSON.stringify(namesArray),
+//                   name: namesArray.join(' & ').substr(0, 200)
+//                 }).then(() => {
+//                   resolveU()
+//                 });
+//               else
+//                 thread.update({participant_names: JSON.stringify(namesArray)}).then(() => {
+//                   resolveU()
+//                 });
+//             });
+//           });
+//           Promise.all(n).then(() => {console.log("lol"); resolve1();});
+//         });
+//       });
+//       //this is wrong..
+//       Promise.all(p).then(() => {console.log("aaaa"); resolve();});
+//     });
+//   })
+// }
 
 
 
 module.exports = {
+  updateUserMessageCounts,
   hintThreadNames,
   updateChatCounts,
-  updateFriendsList: updateFriendsList,
-  updateThreadsList: updateThreadsList,
-  updateThreadDetail: updateThreadDetail,
-  downloadAllThreads: downloadAllThreads,
-  updateThreadHistory: updateThreadHistory,
-  updatePeopleList: updatePeopleList
+  updateFriendsList,
+  updateThreadsList,
+  updateThreadDetail,
+  downloadAllThreads,
+  updateThreadHistory,
+  updatePeopleList,
 };

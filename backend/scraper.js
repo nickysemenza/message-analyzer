@@ -21,7 +21,7 @@ login({appState: JSON.parse(fs.readFileSync('appstate.json', 'utf8'))}, (err, ap
     utils.updateThreadsList(api).then(a=>{console.log('thread list updated: ',a)});
 
     //now to tackle the messages
-    utils.updateThreadHistory(api, "100001555711062")
+    utils.updateThreadHistory(api, "1630448017222903")
       .then(a=>{console.log('thread updated',a);}).catch(a=>console.log('oops',a));
     queue.process('thread-download', function(job, done){
       // pullThread(job.data.thread_id, done);
