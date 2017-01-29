@@ -1,29 +1,29 @@
 const debug = require('debug')('express-sequelize');
 const models = require('../models');
-const Promise = require("bluebird");
 /* eslint-disable no-console */
 
 models.sequelize.sync().then(() => {
 
-  models.FacebookThread.findAll().then(threads => {
-    // threads = threads.slice(0,3);
-
-    let allThreadsPromise = threads.map(eachThread => {
-      return new Promise((resolve, reject) => {
-        let threadID = eachThread.thread_id;
-        models.FacebookMessage.count({ where: {thread_id: threadID} })
-        .then(count => {
+  const countsQuery = 'SELECT DISTINCT thread_id, COUNT(thread_id) AS subtotal FROM facebook_messages GROUP BY thread_id ORDER BY subtotal DESC';
+  let updateChatCounts = new Promise((resolveO, reject) => {
+    models.sequelize.query(countsQuery).spread((results) => {
+      let promises = results.map(result=>{
+        return new Promise((resolve, reject) => {
           models.FacebookThread.update(
-            { downloaded_message_count: count },
-            { where: { thread_id: threadID } }
-          )
-          .then(result => resolve([eachThread.thread_id,count, result]));
+            { downloaded_message_count: result.subtotal },
+            { where: { thread_id: result.thread_id } }
+          ).then(updateResult => resolve(updateResult));
         });
       });
-
+      Promise.all(promises).then(p => {console.log('downloaded_message_count updated'); resolveO(p);});
     });
-    Promise.all(allThreadsPromise).then(a => {console.log("done1",a.length); process.exit(0);});
+
   });
 
+
+
+  Promise.all([updateChatCounts]).then(() => {
+    process.exit(0);
+  });
 
 });
