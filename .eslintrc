@@ -25,6 +25,7 @@
     "mocha": true
   },
   "rules": {
+    "prefer-arrow-callback": 1,
     "quotes": 0,
     "no-unused-vars": 0,
     "no-console": 1,

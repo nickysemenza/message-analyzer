@@ -1,24 +1,29 @@
 const debug = require('debug')('express-sequelize');
 const models = require('../models');
+const Promise = require("bluebird");
+/* eslint-disable no-console */
 
-models.sequelize.sync().then(function() {
+models.sequelize.sync().then(() => {
 
   models.FacebookThread.findAll().then(threads => {
-    for(let a in threads) {
-      // let people = JSON.parse(threads[a].participant_ids);
-      let threadID = threads[a].thread_id;
-      console.log("thread "+threadID);
+    // threads = threads.slice(0,3);
 
-      models.FacebookMessage.count({ where: {thread_id: threadID} }).then(function(c) {
-        models.FacebookThread.update(
-          { downloaded_message_count: c },
-          { where: { thread_id: threadID } }
-        )
+    let allThreadsPromise = threads.map(eachThread => {
+      return new Promise((resolve, reject) => {
+        let threadID = eachThread.thread_id;
+        models.FacebookMessage.count({ where: {thread_id: threadID} })
+        .then(count => {
+          models.FacebookThread.update(
+            { downloaded_message_count: count },
+            { where: { thread_id: threadID } }
+          )
+          .then(result => resolve([eachThread.thread_id,count, result]));
+        });
       });
 
-    }
-  }).then(a => {console.log("done",a)});
+    });
+    Promise.all(allThreadsPromise).then(a => {console.log("done1",a.length); process.exit(0);});
+  });
 
-  //i want to do something here once all my code has finished
 
 });

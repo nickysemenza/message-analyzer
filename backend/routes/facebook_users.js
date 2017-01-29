@@ -3,15 +3,14 @@ let express = require('express');
 let router  = express.Router();
 
 
-router.get('/', function(req, res) {
+router.get('/', (req, res) => {
   models.FacebookUser.findAll()
-    .then(function(users) {
+    .then((users) => {
     res.json(users);
   });
 });
 
 router.get('/:user_id/threads', (req, res) => {
-  console.log(req.params);
   models.FacebookThread.findAll().then(threads => {
     let threadList = [];
     for(let a in threads) {

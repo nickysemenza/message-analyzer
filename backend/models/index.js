@@ -1,4 +1,6 @@
 'use strict';
+/* eslint-disable no-redeclare */
+/* eslint-disable no-var */
 
 let fs        = require('fs');
 let path      = require('path');
@@ -16,15 +18,15 @@ if (config.use_env_variable) {
 
 fs
   .readdirSync(__dirname)
-  .filter(function(file) {
+  .filter((file) => {
     return (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.js');
   })
-  .forEach(function(file) {
+  .forEach((file) => {
     let model = sequelize['import'](path.join(__dirname, file));
     db[model.name] = model;
   });
 
-Object.keys(db).forEach(function(modelName) {
+Object.keys(db).forEach((modelName) => {
   if (db[modelName].associate) {
     db[modelName].associate(db);
   }

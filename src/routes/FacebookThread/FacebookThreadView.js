@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import NVD3Chart from 'react-nvd3';
+// import d3 from 'd3';
 export default class FacebookThreadView extends Component {
   componentDidMount () {
     this.props.loadData();
@@ -82,8 +83,8 @@ export default class FacebookThreadView extends Component {
           datum={datum}
           x="label"
           y="value"
-          xAxis={{tickFormat: function(d) { return d3.time.format('%b %d %y')(new Date(d)); }}}
         />
+        {/*          xAxis={{tickFormat: function(d) { return d3.time.format('%b %d %y')(new Date(d)); }}}*/}
 
 
         <NVD3Chart

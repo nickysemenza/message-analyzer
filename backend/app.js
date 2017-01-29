@@ -26,7 +26,7 @@ app.use('/facebook/threads', require('./routes/facebook_threads'));
 app.use('/facebook/users', require('./routes/facebook_users'));
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use((req, res, next) => {
   let err = new Error('Not Found');
   err.status = 404;
   next(err);
@@ -34,7 +34,7 @@ app.use(function(req, res, next) {
 
 // error handler
 // no stacktraces leaked to user unless in development environment
-app.use(function(err, req, res, next) {
+app.use((err, req, res, next) => {
   // res.status(err.status || 500);
   res.render({
     message: err.message,

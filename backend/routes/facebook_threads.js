@@ -2,7 +2,7 @@ let models  = require('../models');
 let express = require('express');
 let router  = express.Router();
 
-var kue = require('kue')
+let kue = require('kue')
   , queue = kue.createQueue();
 
 
@@ -12,32 +12,21 @@ router.get('/', (req, res) => {
       res.json(threads);
     });
 });
-
-// router.post('/create', function(req, res) {
-//   models.User.create({
-//     username: req.body.username
-//   }).then(function() {
-//     res.redirect('/');
-//   });
-// });
-//
 router.get('/:thread_id/messages', (req, res) => {
-  console.log(req.params);
   models.FacebookMessage.findAll({
     where: {
       thread_id: req.params.thread_id
     }
   }).then(thread => {
-    var job = queue.create('thread-download', {
-      thread_id: req.params.thread_id}).save( function(err){
-      if( !err ) console.log( job.id );
-    });
+    // let job = queue.create('thread-download', {
+    //   thread_id: req.params.thread_id}).save( function(err){
+    //   if( !err ) console.log( job.id );
+    // });
     res.send(thread.slice(0,9999));
   });
 });
 
 router.get('/:thread_id/stats', (req, res) => {
-  console.log(req.params);
   models.FacebookMessage.findAll({
     where: {
       thread_id: req.params.thread_id
@@ -51,26 +40,5 @@ router.get('/:thread_id/stats', (req, res) => {
     res.send({count: thread.length, counts});
   });
 });
-
-//
-// router.post('/:user_id/tasks/create', function (req, res) {
-//   models.Task.create({
-//     title: req.body.title,
-//     UserId: req.params.user_id
-//   }).then(function() {
-//     res.redirect('/');
-//   });
-// });
-//
-// router.get('/:user_id/tasks/:task_id/destroy', function (req, res) {
-//   models.Task.destroy({
-//     where: {
-//       id: req.params.task_id
-//     }
-//   }).then(function() {
-//     res.redirect('/');
-//   });
-// });
-
 
 module.exports =  router;
