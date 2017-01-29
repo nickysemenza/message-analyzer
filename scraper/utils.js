@@ -18,15 +18,11 @@ connection.connect();
  * gets your friends list, and saves it to the DB so you can do a fbid->name lookout without making an API call
  */
 function updateFriendsList(api) {
-  api.getFriendsList((err, data) => {
-    if (err) return console.error(err);
-
-    console.log(data.length + " friends");
-
-    for (let x in data) {
-      let each = data[x];
-      saveFacebookUser(each);
-    }
+  return new Promise((resolve, reject) => {
+    api.getFriendsList((err, data) => {
+      if (err) reject(err);
+      Promise.all(data.map(user=>saveFacebookUser(user))).then(()=>{resolve({num_friends: data.length})});
+    });
   });
 }
 /**
@@ -34,18 +30,19 @@ function updateFriendsList(api) {
  * (this is just a helper function, not meant to be called directly)
  */
 function saveFacebookUser(each) {
-  let dbdata = {
-    facebook_id: each.userID,
-    first_name: each.firstName,
-    full_name: each.fullName,
-    raw: JSON.stringify(each)
-  };
+  return new Promise((resolve, reject) => {
+    let dbdata = {
+      facebook_id: each.userID,
+      first_name: each.firstName,
+      full_name: each.fullName,
+      raw: JSON.stringify(each)
+    };
 
-  let query = connection.query('INSERT INTO facebook_users SET ?', dbdata, (err, result) => {
-    if (err) {
-      if (err.code != "ER_DUP_ENTRY")
-        console.log(err);
-    }
+    connection.query('INSERT INTO facebook_users SET ?', dbdata, (err, result) => {
+      if (err)
+        if (err.code != "ER_DUP_ENTRY") reject(err);
+      resolve();
+    });
   });
 }
 /**
