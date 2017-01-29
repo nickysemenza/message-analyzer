@@ -104,23 +104,24 @@ function updateThreadsListRecur(api, start, end, resolve, reject, sum) {
  */
 function updateThreadHistory(api, thread) {
   return new Promise((resolve, reject) => {
-    updateThreadDetail(api, thread, 0,10000, null, resolve, reject);
+    updateThreadDetail(api, thread, 0,10000, null, 0, resolve, reject);
   });
 }
-function updateThreadDetail(api, thread, start, end, ts, resolve, reject) {
+function updateThreadDetail(api, thread, start, end, ts, sum, resolve, reject) {
   api.getThreadHistory(thread, start, end, ts, (err, hist) => {
     let requestedCount = (end - start);
     if (hist == null)
       resolve();
     let returnedCount = hist.length;
     console.log("[updateThreadDetail - " + thread + "] requested " + start + "->" + end + "(" + requestedCount + ") messages(timestamp=" + ts + "), got " + returnedCount + " messages");
-    //if we are returned less than requested, that we done
 
+    sum+=returnedCount;
     if (requestedCount == (returnedCount - 1)) //TODO: why is hist always 1001 messages?
-      updateThreadDetail(api, thread, start, end, hist[0].timestamp, resolve, reject); //uses timestamps not start/end to batch
+      updateThreadDetail(api, thread, start, end, hist[0].timestamp, sum, resolve, reject); //uses timestamps not start/end to batch
     else {
+      //if we are returned less than requested, then we are done
       console.log("[updateThreadDetail - " + thread + "] done");
-      resolve();
+      resolve({num_messages: sum});
     }
     // console.log(hist[0].messageID);
 
