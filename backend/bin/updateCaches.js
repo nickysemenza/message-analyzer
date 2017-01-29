@@ -5,9 +5,9 @@ const models = require('../models');
 let utils = require('.././utils');
 
 
-// let chatCounts = utils.updateChatCounts();
+let chatCounts = utils.updateChatCounts();
 let hint = utils.hintThreadNames();
-  Promise.all([hint]).then(() => {
+  Promise.all([hint, chatCounts]).then(() => {
     process.exit(0);
   });
 

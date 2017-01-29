@@ -14,22 +14,19 @@ let kue = require('kue')
 
 login({appState: JSON.parse(fs.readFileSync('appstate.json', 'utf8'))}, (err, api) => {
     if(err) return console.error(err);
+
+    //update the 3 people and threads table
     utils.updateFriendsList(api).then(a=>{console.log('friend list updated: ',a)});
     utils.updatePeopleList(api).then(a=>{console.log('people list updated: ',a)});
     utils.updateThreadsList(api).then(a=>{console.log('thread list updated: ',a)});
 
-    utils.updateThreadHistory(api, "1713091366")
-    // utils.updateThreadHistory(api, "838812462886665")
+    //now to tackle the messages
+    utils.updateThreadHistory(api, "100001555711062")
       .then(a=>{console.log('thread updated',a);}).catch(a=>console.log('oops',a));
-    //
-    //
-    // queue.process('thread-download', function(job, done){
-    //   pullThread(job.data.thread_id, done);
-    // });
-    //
-    // function pullThread(thread_id, done) {
-    //   utils.updateThreadHistory(api, thread_id).then(()=>{done();});
-    // }
+    queue.process('thread-download', function(job, done){
+      // pullThread(job.data.thread_id, done);
+      utils.updateThreadHistory(api, job.data.thread_id).then(()=>{done();});
+    });
 
     // utils.downloadAllThreads(api);
     // setInterval( function() { console.log("setint"); utils.downloadAllThreads(api); }, 24000 );
