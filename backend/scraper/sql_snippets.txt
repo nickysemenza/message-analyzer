@@ -1,8 +1,0 @@
-SELECT DISTINCT sender_name,
-COUNT(sender_name) AS subtotal
-FROM facebook_messages
-WHERE thread_id = "869042309831501"
-GROUP BY sender_name
-ORDER BY subtotal DESC
-
-
