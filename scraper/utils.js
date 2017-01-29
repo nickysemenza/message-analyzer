@@ -21,7 +21,7 @@ function updateFriendsList(api) {
   return new Promise((resolve, reject) => {
     api.getFriendsList((err, data) => {
       if (err) reject(err);
-      Promise.all(data.map(user=>saveFacebookUser(user))).then(()=>{resolve({num_friends: data.length})});
+      Promise.all(data.map(user=>saveFacebookUser(user))).then(()=>{resolve({num_friends: data.length});});
     });
   });
 }
@@ -116,38 +116,44 @@ function updateThreadDetail(api, thread, start, end, ts, sum, resolve, reject) {
     console.log("[updateThreadDetail - " + thread + "] requested " + start + "->" + end + "(" + requestedCount + ") messages(timestamp=" + ts + "), got " + returnedCount + " messages");
 
     sum+=returnedCount;
-    if (requestedCount == (returnedCount - 1)) //TODO: why is hist always 1001 messages?
-      updateThreadDetail(api, thread, start, end, hist[0].timestamp, sum, resolve, reject); //uses timestamps not start/end to batch
-    else {
-      //if we are returned less than requested, then we are done
-      console.log("[updateThreadDetail - " + thread + "] done");
-      resolve({num_messages: sum});
-    }
-    // console.log(hist[0].messageID);
 
-    for (let x in hist) {
-      let each = hist[x];
-      let dbdata = {
-        sender_name: each.senderName,
-        sender_id: each.senderID,
-        body: each.body,
-        thread_id: each.threadID,
-        message_id: each.messageID,
-        attachments: JSON.stringify(each.attachments),
-        timestamp: String(each.timestamp).slice(0, -3),
-        raw: JSON.stringify(each)
-      };
-      let query = connection.query('INSERT INTO facebook_messages SET ?', dbdata, (err, result) => {
-        if (err) {
-          if (err.code != "ER_DUP_ENTRY")
-            console.log(err);
-          else {
-            // console.log("bye");
-            reject();
-          }
+    Promise.all(hist.map(msg => saveThreadMessage(msg))).then(() => {
+      console.log("all messages on this page saved");
+
+      if (requestedCount == (returnedCount - 1)) //TODO: why is hist always 1001 messages?
+        updateThreadDetail(api, thread, start, end, hist[0].timestamp, sum, resolve, reject); //uses timestamps not start/end to batch
+      else {
+        //if we are returned less than requested, then we are done
+        console.log("[updateThreadDetail - " + thread + "] done");
+        resolve({num_messages: sum});
+      }
+    });
+  });
+}
+function saveThreadMessage(each) {
+  return new Promise((resolve, reject) => {
+    let dbdata = {
+      sender_name: each.senderName,
+      sender_id: each.senderID,
+      body: each.body,
+      thread_id: each.threadID,
+      message_id: each.messageID,
+      attachments: JSON.stringify(each.attachments),
+      timestamp: String(each.timestamp).slice(0, -3),
+      raw: JSON.stringify(each)
+    };
+    let query = connection.query('INSERT INTO facebook_messages SET ?', dbdata, (err, result) => {
+      if (err) {
+        if (err.code != "ER_DUP_ENTRY") {
+          reject(err);//bad error
         }
-      });
-    }
+        else {
+          resolve({duplicate: true});
+        }
+      }
+      else//good to go
+        resolve({duplicate: false});
+    });
   });
 }
 /**
