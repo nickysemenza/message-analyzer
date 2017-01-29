@@ -18,7 +18,8 @@ module.exports = {
         type: Sequelize.STRING
       },
       message_id: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        unique: true
       },
       body: {
         type: Sequelize.TEXT
@@ -31,16 +32,6 @@ module.exports = {
       },
       timestamp: {
         type: Sequelize.STRING
-      },
-      createdAt: {
-        allowNull: false,
-        type: Sequelize.DATE,
-        defaultValue: Sequelize.NOW
-      },
-      updatedAt: {
-        allowNull: false,
-        type: Sequelize.DATE,
-        defaultValue: Sequelize.NOW
       }
     },
       {

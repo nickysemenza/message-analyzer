@@ -2,7 +2,7 @@ let mysql = require('mysql');
 /* eslint-disable no-console */
 
 require('dotenv').config({
-  path: '../.env'
+  path: '../../.env'
 });
 
 let connection = mysql.createConnection({

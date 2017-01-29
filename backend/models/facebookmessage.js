@@ -10,6 +10,8 @@ module.exports = function(sequelize, DataTypes) {
     attachments: DataTypes.TEXT,
     timestamp: DataTypes.STRING
   }, {
+    underscored: true,
+    timestamps: false,
     tableName: 'facebook_messages',
     classMethods: {
       associate: function(models) {

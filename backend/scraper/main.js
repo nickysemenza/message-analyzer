@@ -14,11 +14,11 @@ let kue = require('kue')
 
 login({appState: JSON.parse(fs.readFileSync('appstate.json', 'utf8'))}, (err, api) => {
     if(err) return console.error(err);
-    // utils.updateFriendsList(api).then(a=>{console.log('friend list updated: ',a)});
-    // utils.updatePeopleList(api).then(a=>{console.log('people list updated: ',a)});
-    // utils.updateThreadsList(api).then(a=>{console.log('thread list updated: ',a)});
+    utils.updateFriendsList(api).then(a=>{console.log('friend list updated: ',a)});
+    utils.updatePeopleList(api).then(a=>{console.log('people list updated: ',a)});
+    utils.updateThreadsList(api).then(a=>{console.log('thread list updated: ',a)});
 
-    utils.updateThreadHistory(api, "100000154295985")
+    utils.updateThreadHistory(api, "1713091366")
     // utils.updateThreadHistory(api, "838812462886665")
       .then(a=>{console.log('thread updated',a);}).catch(a=>console.log('oops',a));
     //

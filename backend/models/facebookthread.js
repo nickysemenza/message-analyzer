@@ -9,6 +9,8 @@ module.exports = function(sequelize, DataTypes) {
     participant_ids: DataTypes.TEXT,
     raw: DataTypes.TEXT
   }, {
+    underscored: true,
+    timestamps: false,
     tableName: 'facebook_threads',
     classMethods: {
       associate: function(models) {

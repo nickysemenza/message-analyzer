@@ -7,6 +7,8 @@ module.exports = function(sequelize, DataTypes) {
     raw: DataTypes.TEXT
   }, {
     tableName: 'facebook_users',
+    underscored: true,
+    timestamps: false,
     classMethods: {
       associate: function(models) {
         // associations can be defined here
