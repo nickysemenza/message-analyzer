@@ -113,7 +113,7 @@ function updateThreadsListRecur(api, start, end, resolve, reject, sum) {
 function updateThreadHistory(api, thread) {
   return new Promise((resolve, reject) => {
     updateThreadDetail(api, thread, 0,10000, null, 0, resolve, reject);
-  });
+  }).then(()=>{updateFacebookThreadStats()});
 }
 function updateThreadDetail(api, thread, start, end, ts, sum, resolve, reject) {
   api.getThreadHistory(thread, start, end, ts, (err, hist) => {
@@ -230,10 +230,16 @@ function getNameFromFacebookID(facebook_id) {
   });
 }
 
-
-
 //backend shared helper functions
-function updateChatCounts() {
+/**
+ * updates chat counts and message counts
+ */
+function updateFacebookThreadStats() {
+  return new Promise((resolve, reject)=>{
+    Promise.all([updateNumFacebookMessagesDownloaded(),updateUserMessageCounts()]).then(()=>{resolve();});
+  })
+}
+function updateNumFacebookMessagesDownloaded() {
   return new Promise((resolveO, reject) => {
     const countsQuery = 'SELECT DISTINCT thread_id, COUNT(thread_id) AS subtotal FROM facebook_messages GROUP BY thread_id ORDER BY subtotal DESC';
     models.sequelize.query(countsQuery).spread((results) => {
@@ -331,7 +337,7 @@ function hintThreadNames() {
 module.exports = {
   updateUserMessageCounts,
   hintThreadNames,
-  updateChatCounts,
+  updateFacebookThreadStats,
   updateFriendsList,
   updateThreadsList,
   updateThreadDetail,
