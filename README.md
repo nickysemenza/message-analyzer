@@ -13,7 +13,7 @@ The Scraper code can work on its own if desired.
 3. `cd scraper; npm install`
 4. `node auth.js` to auth with facebook and save the state in `appstate.json` (only need to do this once until the cookies expire)
 5. create the SQL tables (schema below, note that utf8mb4 is important for things like emoji)
-6. Scroll down to the end of main.js and run your code from within login method!
+6. Scroll down to the end of scraper.js and run your code from within login method!
 
 ##SQL Schema
 ```

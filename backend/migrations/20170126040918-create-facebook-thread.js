@@ -27,6 +27,9 @@ module.exports = {
       participant_ids: {
         type: Sequelize.TEXT
       },
+      participant_names: {
+        type: Sequelize.TEXT
+      },
       raw: {
         type: Sequelize.TEXT
       }

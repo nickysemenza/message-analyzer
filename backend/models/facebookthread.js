@@ -7,6 +7,7 @@ module.exports = function(sequelize, DataTypes) {
     downloaded_message_count: DataTypes.INTEGER,
     num_participants: DataTypes.INTEGER,
     participant_ids: DataTypes.TEXT,
+    participant_names: DataTypes.TEXT,
     raw: DataTypes.TEXT
   }, {
     underscored: true,

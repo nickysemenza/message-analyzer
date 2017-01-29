@@ -1,8 +1,9 @@
 let mysql = require('mysql');
 /* eslint-disable no-console */
+const models = require('./models');
 
 require('dotenv').config({
-  path: '../../.env'
+  path: '../.env'
 });
 
 let connection = mysql.createConnection({
@@ -213,7 +214,69 @@ function downloadAllThreads(api) {
 
   });
 }
+
+function getNameFromFacebookID(facebook_id) {
+  return new Promise((resolve, reject) => {
+    models.FacebookUser.find({
+      where: {facebook_id}
+    }).then(user => {resolve(user.full_name)});
+  });
+}
+
+
+
+//backend shared helper functions
+function updateChatCounts() {
+  return new Promise((resolveO, reject) => {
+    const countsQuery = 'SELECT DISTINCT thread_id, COUNT(thread_id) AS subtotal FROM facebook_messages GROUP BY thread_id ORDER BY subtotal DESC';
+    models.sequelize.query(countsQuery).spread((results) => {
+      let promises = results.map(result=>{
+        return new Promise((resolve, reject) => {
+          models.FacebookThread.update(
+            { downloaded_message_count: result.subtotal },
+            { where: { thread_id: result.thread_id } }
+          ).then(updateResult => resolve(updateResult));
+        });
+      });
+      Promise.all(promises).then(p => {console.log('downloaded_message_count updated'); resolveO(p);});
+    });
+
+  });
+}
+
+function hintThreadNames() {
+  return new Promise((resolve, reject) => {
+    models.FacebookThread.findAll().then(threads => {
+      let p = threads.map(thread => {
+        // console.log(thread.thread_id);
+        let peopleIDs = JSON.parse(thread.participant_ids);
+        // console.log(peopleIDs);
+        let names = peopleIDs.map(p => getNameFromFacebookID(p));
+        return Promise.all(names).then(n=> {
+          let nameString = n.join(' & ').substr(0,200);
+          console.log(nameString);
+          return new Promise((resolveU, rejectU) => {
+            if(thread.name=='')
+              thread.update({participant_names: JSON.stringify(n), name: nameString}).then(resolveU());
+            else
+              thread.update({participant_names: JSON.stringify(n)}).then(resolveU());
+          });
+        });
+
+
+      });
+      // Promise.all(p).then(resolve());
+      // setTimeout(()=>{resolve()},3000);
+    });
+
+  })
+}
+
+
+
 module.exports = {
+  hintThreadNames,
+  updateChatCounts,
   updateFriendsList: updateFriendsList,
   updateThreadsList: updateThreadsList,
   updateThreadDetail: updateThreadDetail,
