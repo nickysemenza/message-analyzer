@@ -39,8 +39,7 @@ models.FacebookAttachment.findAll({
       if(attachment.url) {
         let ext = attachment.url.match(/\.([^\./\?]+)($|\?)/)[1];
         let filename = "facebook_attachments/"+attachment.hash+"."+ ext;
-        request(attachment.url).pipe(fs.createWriteStream(filename)).on('close', function ()
-        {
+        request(attachment.url).pipe(fs.createWriteStream(filename)).on('close', () => {
           console.log("done");
           attachment.update({filename}).then(()=>{resolve();});
         });
@@ -52,5 +51,5 @@ models.FacebookAttachment.findAll({
 
   Promise.all(p).then(()=>{
     console.log("done!");
-  })
+  });
 });

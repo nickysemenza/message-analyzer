@@ -18,13 +18,13 @@ login({appState: JSON.parse(fs.readFileSync('appstate.json', 'utf8'))}, (err, ap
     //update the 3 people and threads table
     if(true) {
       utils.updateFriendsList(api).then(a => {
-        console.log('friend list updated: ', a)
+        console.log('friend list updated: ', a);
       });
       utils.updatePeopleList(api).then(a => {
-        console.log('people list updated: ', a)
+        console.log('people list updated: ', a);
       });
       utils.updateThreadsList(api).then(a => {
-        console.log('thread list updated: ', a)
+        console.log('thread list updated: ', a);
       });
     }
 
@@ -33,7 +33,7 @@ login({appState: JSON.parse(fs.readFileSync('appstate.json', 'utf8'))}, (err, ap
     //   .then(a=>{console.log('thread updated',a);}).catch(a=>console.log('oops',a));
 
 
-    queue.process('thread-download', function(job, done){
+    queue.process('thread-download', (job, done) => {
       utils.updateThreadHistory(api, job.data.thread_id).then(()=>{done();});
     });
 

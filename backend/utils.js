@@ -113,7 +113,7 @@ function updateThreadsListRecur(api, start, end, resolve, reject, sum) {
 function updateThreadHistory(api, thread) {
   return new Promise((resolve, reject) => {
     updateThreadDetail(api, thread, 0,10000, null, 0, resolve, reject);
-  }).then(()=>{updateFacebookThreadStats()});
+  }).then(()=>{updateFacebookThreadStats();});
 }
 function updateThreadDetail(api, thread, start, end, ts, sum, resolve, reject) {
   api.getThreadHistory(thread, start, end, ts, (err, hist) => {
@@ -228,7 +228,7 @@ function getNameFromFacebookID(facebook_id) {
   return new Promise((resolve, reject) => {
     models.FacebookUser.find({
       where: {facebook_id}
-    }).then(user => {resolve(user.full_name)});
+    }).then(user => {resolve(user.full_name);});
   });
 }
 
@@ -239,7 +239,7 @@ function getNameFromFacebookID(facebook_id) {
 function updateFacebookThreadStats() {
   return new Promise((resolve, reject)=>{
     Promise.all([updateNumFacebookMessagesDownloaded(),updateUserMessageCounts()]).then(()=>{resolve();});
-  })
+  });
 }
 function updateNumFacebookMessagesDownloaded() {
   return new Promise((resolveO, reject) => {
@@ -291,16 +291,16 @@ function hintThreadNames() {
         return Promise.all(JSON.parse(thread.participant_ids).map(p => getNameFromFacebookID(p))).then(namesArray=> {
           return new Promise((resolveU, rejectU) => {
             if(thread.name=='')
-              thread.update({participant_names: JSON.stringify(namesArray), name: namesArray.join(' & ').substr(0,200)}).then(()=>{resolveU()});
+              thread.update({participant_names: JSON.stringify(namesArray), name: namesArray.join(' & ').substr(0,200)}).then(()=>{resolveU();});
             else
-              thread.update({participant_names: JSON.stringify(namesArray)}).then(()=>{resolveU()});
+              thread.update({participant_names: JSON.stringify(namesArray)}).then(()=>{resolveU();});
           });
         });
       });
       //this is wrong..
       Promise.all(p).then(() => {console.log("aaaa"); resolve();});
     });
-  })
+  });
 }
 
 function saveAttachment(message_id, thread_id, index, attachment) {
@@ -323,9 +323,9 @@ function saveAttachment(message_id, thread_id, index, attachment) {
       sticker_id: attachment.type == 'sticker' ? attachment.stickerID : null,
       url,
       raw: JSON.stringify(attachment)
-    }).then(function() {
+    }).then(() => {
       resolve();
-    }).catch((e) => {resolve(e)});
+    }).catch((e) => {resolve(e);});
 
   });
 }

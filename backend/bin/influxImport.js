@@ -29,6 +29,6 @@ models.FacebookMessage.findAll({}).then(msgs => {
       tags: { thread_id: msg.thread_id, facebook_user_id: msg.sender_id },
       fields: { person: msg.sender_name, thread: msg.thread_id, message_id: msg.message_id },
       timestamp: new Date(msg.timestamp*1000)
-    }});
-  influx.writePoints(inserts).then(()=>{console.log('done')}).catch((e)=>{console.log('eek',e)});
+    };});
+  influx.writePoints(inserts).then(()=>{console.log('done');}).catch((e)=>{console.log('eek',e);});
 });
