@@ -303,6 +303,33 @@ function hintThreadNames() {
   })
 }
 
+function saveAttachment(message_id, thread_id, index, attachment) {
+  return new Promise((resolve, reject) => {
+
+    let url = null;
+    if(attachment.url)
+      url = attachment.url;
+    else if(attachment.largePreviewUrl)
+      url = attachment.largePreviewUrl;
+    else if(attachment.previewUrl)
+      url = attachment.previewUrl;
+
+
+    models.FacebookAttachment.create({
+      message_id,
+      thread_id,
+      type: attachment.type,
+      hash: message_id+"-"+index,
+      sticker_id: attachment.type == 'sticker' ? attachment.stickerID : null,
+      url,
+      raw: JSON.stringify(attachment)
+    }).then(function() {
+      resolve();
+    }).catch((e) => {resolve(e)});
+
+  });
+}
+
 module.exports = {
   updateUserMessageCounts,
   hintThreadNames,
@@ -313,4 +340,5 @@ module.exports = {
   downloadAllThreads,
   updateThreadHistory,
   updatePeopleList,
+  saveAttachment,
 };
