@@ -22,13 +22,13 @@ module.exports = {
         unique: true
       },
       body: {
-        type: Sequelize.TEXT
+        type: Sequelize.TEXT('long')
       },
       raw: {
-        type: Sequelize.TEXT
+        type: Sequelize.TEXT('long')
       },
       attachments: {
-        type: Sequelize.TEXT
+        type: Sequelize.TEXT('long')
       },
       timestamp: {
         type: Sequelize.STRING

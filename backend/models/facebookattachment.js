@@ -3,13 +3,14 @@ module.exports = function(sequelize, DataTypes) {
   let FacebookAttachment = sequelize.define('FacebookAttachment', {
     message_id: DataTypes.STRING,
     thread_id: DataTypes.STRING,
+    user_id: DataTypes.STRING,
     type: DataTypes.STRING,
     sticker_id: DataTypes.STRING,
     url: DataTypes.STRING,
     hash: DataTypes.STRING,
     filename: DataTypes.STRING,
     file_hash: DataTypes.STRING,
-    raw: DataTypes.TEXT
+    raw: DataTypes.TEXT('long')
   }, {
     underscored: true,
     timestamps: false,

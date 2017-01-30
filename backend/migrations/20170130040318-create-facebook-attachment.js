@@ -14,6 +14,9 @@ module.exports = {
       thread_id: {
         type: Sequelize.STRING
       },
+      user_id: {
+        type: Sequelize.STRING
+      },
       type: {
         type: Sequelize.STRING
       },
@@ -34,7 +37,7 @@ module.exports = {
         type: Sequelize.STRING
       },
       raw: {
-        type: Sequelize.TEXT
+        type: Sequelize.TEXT('long')
       }
     },
       {
