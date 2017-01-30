@@ -298,7 +298,8 @@ function hintThreadNames() {
         });
       });
       //this is wrong..
-      Promise.all(p).then(() => {console.log("aaaa"); resolve();});
+      // Promise.all(p).then(() => {console.log("aaaa"); resolve();});
+      setTimeout(()=>{resolve();},10*1000);
     });
   });
 }

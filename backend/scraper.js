@@ -3,46 +3,36 @@
 let login = require("facebook-chat-api");
 let fs    = require("fs");
 let utils = require('./utils');
-
+let emoji = require('node-emoji')
 let kue = require('kue')
   , queue = kue.createQueue();
-
-// var job = queue.create('thread-download', {
-//   thread_id: '1116429422'}).save( function(err){
-//   if( !err ) console.log( job.id );
-// });
 
 login({appState: JSON.parse(fs.readFileSync('appstate.json', 'utf8'))}, (err, api) => {
     if(err) return console.error(err);
 
-    //update the 3 people and threads table
     if(true) {
-      utils.updateFriendsList(api).then(a => {
-        console.log('friend list updated: ', a);
-      });
-      utils.updatePeopleList(api).then(a => {
-        console.log('people list updated: ', a);
-      });
-      utils.updateThreadsList(api).then(a => {
-        console.log('thread list updated: ', a);
+      //update the 3 people and threads table
+      Promise.all([
+        utils.updateFriendsList(api),
+        utils.updatePeopleList(api),
+        utils.updateThreadsList(api)
+      ]).then(a=>{
+        console.log(a);
+        utils.hintThreadNames().then(()=> {
+          console.log(
+            emoji.get('white_check_mark')+'  friends and people list updated\n' +
+            emoji.get('white_check_mark')+'  thread list updated\n' +
+            emoji.get('white_check_mark')+'  thread names hinted');
+        })
       });
     }
 
     //now to tackle the messages
-    // utils.updateThreadHistory(api, "869042309831501")
-    //   .then(a=>{console.log('thread updated',a);}).catch(a=>console.log('oops',a));
-
+    // utils.updateThreadHistory(api, "869042309831501").then(a=>{console.log('thread updated',a);}).catch(a=>console.log('oops',a));
 
     queue.process('thread-download', (job, done) => {
       utils.updateThreadHistory(api, job.data.thread_id).then(()=>{done();});
     });
-
-
-    // utils.downloadAllThreads(api);
-    // setInterval( function() { console.log("setint"); utils.downloadAllThreads(api); }, 24000 );
-
-
-
 });
 
 
