@@ -39,6 +39,7 @@
     "cors": "^2.8.1",
     "dotenv": "^2.0.0",
     "facebook-chat-api": "https://github.com/nickysemenza/facebook-chat-api/tarball/master",
+    "influx": "5.0.0-alpha.4",
     "kue": "^0.11.5",
     "morgan": "^1.7.0",
     "mysql": "^2.11.1",
