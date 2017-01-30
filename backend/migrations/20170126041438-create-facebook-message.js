@@ -32,6 +32,12 @@ module.exports = {
       },
       timestamp: {
         type: Sequelize.STRING
+      },
+      tags: {
+        type: Sequelize.TEXT
+      },
+      log_message_data: {
+        type: Sequelize.TEXT
       }
     },
       {

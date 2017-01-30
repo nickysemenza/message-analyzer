@@ -8,7 +8,9 @@ module.exports = function(sequelize, DataTypes) {
     body: DataTypes.TEXT,
     raw: DataTypes.TEXT,
     attachments: DataTypes.TEXT,
-    timestamp: DataTypes.STRING
+    timestamp: DataTypes.STRING,
+    tags: DataTypes.TEXT,
+    log_message_data: DataTypes.TEXT
   }, {
     underscored: true,
     timestamps: false,

@@ -148,6 +148,8 @@ function saveThreadMessage(each) {
       message_id: each.messageID,
       attachments: JSON.stringify(each.attachments),
       timestamp: String(each.timestamp).slice(0, -3),
+      tags: JSON.stringify(each.tags),
+      log_message_data: each.log_message_data ? JSON.stringify(each.log_message_data) : null,
       raw: JSON.stringify(each)
     };
     let query = connection.query('INSERT INTO facebook_messages SET ?', dbdata, (err, result) => {
@@ -272,13 +274,11 @@ function updateUserMessageCounts() {
         counts[row.thread_id][row.sender_name] = currVal+row.num;
 
       });
-      console.log(counts);
 
       let p = [];
       for(let key in counts) {
         p.push(client.hsetAsync("thread:"+key, ["stats", JSON.stringify(counts[key])]));
       }
-
       Promise.all(p).then(()=>{resolve();});
     });
   });
@@ -302,37 +302,6 @@ function hintThreadNames() {
     });
   })
 }
-
-// function hintThreadNames() {
-//   return new Promise((resolve, reject) => {
-//     models.FacebookThread.findAll().then(threads => {
-//       let p = threads.map(thread => {
-//         return new Promise((resolve1, reject1) => {
-//           let n = Promise.all(JSON.parse(thread.participant_ids).map(p => getNameFromFacebookID(p))).then(namesArray => {
-//             return new Promise((resolveU, rejectU) => {
-//               if (thread.name == '')
-//                 thread.update({
-//                   participant_names: JSON.stringify(namesArray),
-//                   name: namesArray.join(' & ').substr(0, 200)
-//                 }).then(() => {
-//                   resolveU()
-//                 });
-//               else
-//                 thread.update({participant_names: JSON.stringify(namesArray)}).then(() => {
-//                   resolveU()
-//                 });
-//             });
-//           });
-//           Promise.all(n).then(() => {console.log("lol"); resolve1();});
-//         });
-//       });
-//       //this is wrong..
-//       Promise.all(p).then(() => {console.log("aaaa"); resolve();});
-//     });
-//   })
-// }
-
-
 
 module.exports = {
   updateUserMessageCounts,
