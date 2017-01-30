@@ -331,14 +331,12 @@ function saveAttachment(message_id, thread_id, index, attachment) {
 }
 
 module.exports = {
-  updateUserMessageCounts,
   hintThreadNames,
   updateFacebookThreadStats,
-  updateFriendsList,
-  updateThreadsList,
-  updateThreadDetail,
+  updateFriendsList,// used by scraper.js
+  updateThreadsList,// used by scraper.js
+  updatePeopleList,// used by scraper.js
   downloadAllThreads,
-  updateThreadHistory,
-  updatePeopleList,
+  updateThreadHistory,//used by scraper.js, main entry
   saveAttachment,
 };

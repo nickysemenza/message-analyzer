@@ -1,9 +1,27 @@
 // node --max-old-space-size=4096 bin/processAttachments.js
 const models = require('../models');
 let utils = require('.././utils');
-let fs = require('fs'),
-  request = require('request');
+let fs = require('fs');
+let request = require('request');
 const md5File = require('md5-file/promise');
+
+//
+// hashAttachmentFiles().then(() => {
+//   console.log("all attachments hashed")
+// });
+processAttachments().then(()=>{
+  console.log("all attachments processed");
+  downloadAllAttachments().then(()=>{
+    console.log("all attachments downloaded");
+    hashAttachmentFiles().then(() => {
+      console.log("all attachments hashed");
+      console.log("YAY");
+    });
+  });
+
+});
+
+
 
 
 function processAttachments() {
@@ -33,12 +51,6 @@ function processAttachments() {
 
   })
 }
-
-hashAttachmentFiles().then(() => {
-  console.log("all attachments hashed")
-});
-// processAttachments().then(()=>{console.log("all attachments processed")});
-// downloadAllAttachments().then(()=>{console.log("all attachments downloaded")});
 
 function downloadAllAttachments() {
   return new Promise((resolveM, rejectM) => {
