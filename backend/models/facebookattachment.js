@@ -8,6 +8,7 @@ module.exports = function(sequelize, DataTypes) {
     url: DataTypes.STRING,
     hash: DataTypes.STRING,
     filename: DataTypes.STRING,
+    file_hash: DataTypes.STRING,
     raw: DataTypes.TEXT
   }, {
     underscored: true,

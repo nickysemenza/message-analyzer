@@ -30,6 +30,9 @@ module.exports = {
       filename: {
         type: Sequelize.STRING
       },
+      file_hash: {
+        type: Sequelize.STRING
+      },
       raw: {
         type: Sequelize.TEXT
       }
