@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchThreadMessages } from '../../actions/facebookThreadsActions';
+import { fetchThreadMessages, queueThreadDownload } from '../../actions/facebookThreadsActions';
 import FacebookThreadView from './FacebookThreadView';
 
 function mapStateToProps (state) {
@@ -14,6 +14,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   return {
   loadData: () => {
     dispatch(fetchThreadMessages(ownProps.thread_id));
+  },
+  queueThreadDownload: () => {
+    dispatch(queueThreadDownload(ownProps.thread_id));
   },
   thread_id: ownProps.thread_id
 };};

@@ -19,6 +19,7 @@ export default class FacebookThreadsList extends Component {
 
     return (<div>
         <button onClick={this.props.loadData}>Reload Data</button>
+        <button onClick={this.props.queueDownload}>Queue Thread List Download</button>
         <hr/>
         <BootstrapTable data={threadList} striped={true} hover={true} pagination>
           <TableHeaderColumn dataField="id" width="60" isKey={true} dataSort={true}>ID</TableHeaderColumn>

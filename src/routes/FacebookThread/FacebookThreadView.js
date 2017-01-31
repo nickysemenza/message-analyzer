@@ -70,6 +70,7 @@ export default class FacebookThreadView extends Component {
         <h1>Viewing thread {this.props.thread_id}</h1>z
         {messages.length}
         <button onClick={this.props.loadData}>Reload Data</button>
+        <button onClick={this.props.queueThreadDownload}>Queue Download</button>
 
         <div><pre>{JSON.stringify(threadObj ? threadObj.stats : [] , null, 2) }</pre></div>
 

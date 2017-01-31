@@ -92,3 +92,13 @@ function receiveThreadStats (thread_id, json) {
     receivedAt: Date.now()
   };
 }
+
+
+export function queueThreadDownload (thread_id) {
+  return (dispatch) => {
+    // dispatch(requestThreadStats(thread_id));
+    return fetch(`http://localhost:3003/facebook/threads/${thread_id}/download`)
+      .then((response) => response.json());
+      // .then((json) => dispatch(receiveThreadStats(thread_id, json)));
+  };
+}
