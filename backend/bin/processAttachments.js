@@ -79,7 +79,7 @@ function downloadAllAttachments() {
                     .then(() => {
                       resolve();
                     });
-                }, Math.sqrt(index * 100));
+                }, Math.sqrt(index * 1000000));//((index*100000)^(1/2))/1000  -> seconds, so up to ~25 for 5000 rows
             })
           } else
             resolve();
