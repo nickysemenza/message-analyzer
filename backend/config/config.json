@@ -5,10 +5,14 @@
     "database": "chats_dev",
     "host": "127.0.0.1",
     "dialect": "mysql",
+    "logging": false,
     "define": {
       "charset": "utf8mb4",
       "collate": "utf8mb4_unicode_ci",
       "timestamps": false
+    },
+    "dialectOptions": {
+      "charset": "utf8mb4"
     }
   },
   "test": {

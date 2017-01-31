@@ -2,12 +2,23 @@ const debug = require('debug')('express-sequelize');
 const models = require('../models');
 /* eslint-disable no-console */
 
+const bluebird = require('bluebird');
+let Promise = require('bluebird');
+
+let redis = require("redis"),
+  client = redis.createClient();
+bluebird.promisifyAll(redis.RedisClient.prototype);
+bluebird.promisifyAll(redis.Multi.prototype);
+
 let utils = require('.././utils');
 
 function pushToKeyWithTS(object, thread_id, key, value, timestamp) {
+  let date = new Date(timestamp*1000);
   object[thread_id] = object[thread_id] ? object[thread_id] : {};
   object[thread_id][key] = object[thread_id][key] ? object[thread_id][key] : [];
-  object[thread_id][key].push({value, timestamp});
+  object[thread_id]["all"] = object[thread_id]["all"] ? object[thread_id]["all"] : [];
+  object[thread_id][key].push({value, timestamp, date});
+  object[thread_id]["all"].push({type: key, value, timestamp, date});
   return object;
 }
 
@@ -30,11 +41,26 @@ models.FacebookMessage.findAll({
       let type;
       if (d.added_participants != null) {
         type = "added_participants";
-        resolve();
+        //todo...[0]
+        utils.getNameFromFacebookID(d.added_participants[0].substr(5)).then(user => {
+          data = pushToKeyWithTS(data, thread_id, type,
+            {
+              added: user,
+              added_by: message.sender_name
+            }, timestamp);
+          resolve();
+        });
       }
       else if (d.removed_participants != null) {
         type = "removed_participants";
-        resolve();
+        utils.getNameFromFacebookID(d.removed_participants[0].substr(5)).then(user => {
+          data = pushToKeyWithTS(data, thread_id, type,
+            {
+              removed: user,
+              removed_by: message.sender_name
+            }, timestamp);
+          resolve();
+        });
       }
       else if (d.transfer_id != null) {
         type = "transfer";
@@ -48,7 +74,8 @@ models.FacebookMessage.findAll({
       else if (d.message_type == "change_thread_nickname") {
         type = d.message_type;
         utils.getNameFromFacebookID(d.untypedData.participant_id).then(nicked => {
-          data = pushToKeyWithTS(data, thread_id, type, {
+          data = pushToKeyWithTS(data, thread_id, type,
+           {
             nickname: d.untypedData.nickname,
             nicked,
             nick_changed_by: message.sender_name
@@ -63,10 +90,13 @@ models.FacebookMessage.findAll({
       }
       else if (d.message_type == "change_thread_icon") {
         type = d.message_type;
+        data = pushToKeyWithTS(data, thread_id, type, {icon: d.untypedData.thread_icon, changed_by: message.sender_name}, timestamp);
+        console.log(d.untypedData.thread_icon);
         resolve();
       }
       else if (d.message_type == "change_thread_theme") {
         type = d.message_type;
+        data = pushToKeyWithTS(data, thread_id, type, {color: d.untypedData.theme_color, changed_by: message.sender_name}, timestamp);
         resolve();
       }
       else if (d.message_type == "game_score") {
@@ -117,12 +147,30 @@ models.FacebookMessage.findAll({
     });
   });
   Promise.all(p).then(()=>{
+
+    let redis_insert = Object.keys(data).map((key, index) => {
+      return new Promise((resolve, reject) => {
+        let redisToInsert = [];
+        Object.keys(data[key]).forEach((innerKey) => {
+          redisToInsert.push("actions-"+innerKey);
+          redisToInsert.push(JSON.stringify(data[key][innerKey]));//.substr(0,10));
+        });
+        // ["actions-all", JSON.stringify(data[key])]
+        redisToInsert.push("actions-grouped");
+        redisToInsert.push(JSON.stringify(data[key]));
+        // console.log(redisToInsert);
+        client.hmsetAsync("thread:"+key, redisToInsert).then(()=>{resolve();})
+      })
+    });
+    Promise.all(redis_insert).then(()=>{console.log('yay')});
+
+    // p.push(client.hsetAsync("thread:"+key, ["stats", JSON.stringify(counts[key])]));
     // console.log(JSON.stringify(data['869042309831501']));
-    data['869042309831501']['change_thread_nickname'].map((a)=>{
-      let d = new Date(a.timestamp*1000);
-      let v = a.value;
-      console.log(v.nick_changed_by+" #CHANGED# "+v.nicked+ " #TO# "+v.nickname+" #AT# "+d);
-    })
+    // data['869042309831501']['change_thread_nickname'].map((a)=>{
+    //   let d = new Date(a.timestamp*1000);
+    //   let v = a.value;
+    //   console.log(v.nick_changed_by+" #CHANGED# "+v.nicked+ " #TO# "+v.nickname+" #AT# "+d);
+    // })
   });
 
 
