@@ -5,11 +5,11 @@ const models = require('../models');
 let utils = require('.././utils');
 
 
-let a = utils.updateFacebookThreadStats();
+// let a = utils.updateFacebookThreadStats();
 // let hint = utils.hintThreadNames();
 
 
-  Promise.all([a]).then(() => {
+  Promise.all([hint]).then(() => {
     console.log("done");
     process.exit(0);
   });

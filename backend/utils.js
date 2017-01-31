@@ -304,7 +304,7 @@ function hintThreadNames() {
   });
 }
 
-function saveAttachment(message_id, thread_id, index, attachment) {
+function saveAttachment(message_id, thread_id, sender_id, index, attachment) {
   return new Promise((resolve, reject) => {
 
     let url = null;
@@ -319,6 +319,7 @@ function saveAttachment(message_id, thread_id, index, attachment) {
     models.FacebookAttachment.create({
       message_id,
       thread_id,
+      user_id: sender_id,
       type: attachment.type,
       hash: message_id+"-"+index,
       sticker_id: attachment.type == 'sticker' ? attachment.stickerID : null,

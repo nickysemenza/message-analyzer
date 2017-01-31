@@ -5,9 +5,9 @@ module.exports = function(sequelize, DataTypes) {
     sender_id: DataTypes.STRING,
     thread_id: DataTypes.STRING,
     message_id: DataTypes.STRING,
-    body: DataTypes.TEXT,
-    raw: DataTypes.TEXT,
-    attachments: DataTypes.TEXT,
+    body: DataTypes.TEXT('long'),
+    raw: DataTypes.TEXT('long'),
+    attachments: DataTypes.TEXT('long'),
     timestamp: DataTypes.STRING,
     tags: DataTypes.TEXT,
     log_message_data: DataTypes.TEXT

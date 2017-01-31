@@ -35,7 +35,7 @@ function processAttachments() {
           if (attachments.length > 0) {
             // console.log("----------"+msg.message_id);
             // console.log(attachments.length+ " attachments");
-            let all = attachments.map((att, index) => utils.saveAttachment(msg.message_id, msg.thread_id, index, att));
+            let all = attachments.map((att, index) => utils.saveAttachment(msg.message_id, msg.thread_id, msg.sender_id, index, att));
             Promise.all(all).then(() => {
               resolve()
             });
