@@ -68,7 +68,7 @@ models.FacebookMessage.findAll({
       }
       else if (d.name != null) {
         type = "name";
-        data = pushToKeyWithTS(data, thread_id, type, d.name, timestamp);
+        data = pushToKeyWithTS(data, thread_id, type, {name: d.name, changed_by: message.sender_name}, timestamp);
         resolve();
       }
       else if (d.message_type == "change_thread_nickname") {

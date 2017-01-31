@@ -5,6 +5,8 @@ import {
   RECEIVE_THREAD_MESSAGES,
   REQUEST_THREAD_STATS,
   RECEIVE_THREAD_STATS,
+  REQUEST_THREAD_ACTIONS_ALL,
+  RECEIVE_THREAD_ACTIONS_ALL,
 } from '../actions/facebookThreadsActions';
 
 const INITIAL_STATE = { threads: [], thread_list: {}, lastUpdated_threads: null, loading_threads: false };
@@ -71,6 +73,33 @@ export default function (state = INITIAL_STATE, action) {
             ...state.thread_list[action.thread_id],
             loading: false,
             stats: action.stats,
+            lastUpdated: action.receivedAt
+          }
+        }
+      };
+
+    case REQUEST_THREAD_ACTIONS_ALL:
+      return {
+        ...state,
+        // ...state.threads,
+        thread_list: {
+          ...state.thread_list,
+          [action.thread_id] : {
+            ...state.thread_list[action.thread_id],
+            loading: true}
+        }
+      };
+    case RECEIVE_THREAD_ACTIONS_ALL:
+
+      return {
+        ...state,
+        // ...state.threads,
+        thread_list: {
+          ...state.thread_list,
+          [action.thread_id] : {
+            ...state.thread_list[action.thread_id],
+            loading: false,
+            actions_all: action.actions_all,
             lastUpdated: action.receivedAt
           }
         }

@@ -23,10 +23,6 @@ router.get('/:thread_id/messages', (req, res) => {
       thread_id: req.params.thread_id
     }
   }).then(thread => {
-    // let job = queue.create('thread-download', {
-    //   thread_id: req.params.thread_id}).save( function(err){
-    //   if( !err ) console.log( job.id );
-    // });
     res.send(thread.slice(0,9999));
   });
 });
@@ -52,18 +48,12 @@ router.get('/:thread_id/stats', (req, res) => {
   client.hgetAsync("thread:"+req.params.thread_id,'stats').then(a=>{
     res.send({counts: JSON.parse(a)});
   });
-  // models.FacebookMessage.findAll({
-  //   where: {
-  //     thread_id: req.params.thread_id
-  //   }
-  // }).then(thread => {
-  //   // let times = thread.map(item =>{ return {timestamp: item.timestamp, name: item.sender_name}});
-  //   let counts = {};
-  //   thread.forEach(msg => {
-  //     counts[msg.sender_name] = ++counts[msg.sender_name] || 1;
-  //   });
-  //   res.send({count: thread.length, counts});
-  // });
+});
+
+router.get('/:thread_id/actions/all', (req, res) => {
+  client.hgetAsync("thread:"+req.params.thread_id,'actions-all').then(a=>{
+    res.send({actions_all: JSON.parse(a)});
+  });
 });
 
 module.exports =  router;

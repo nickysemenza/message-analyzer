@@ -38,6 +38,7 @@ export function fetchThreadMessages (thread_id) {
   return (dispatch) => {
     dispatch(requestThreadMessages(thread_id));
     dispatch(fetchThreadStats(thread_id));
+    dispatch(fetchThreadActionsAll(thread_id));
     return fetch(`http://localhost:3003/facebook/threads/${thread_id}/messages`)
       .then((response) => response.json())
       .then((json) => dispatch(receiveThreadMessages(thread_id, json)));
@@ -88,6 +89,37 @@ function receiveThreadStats (thread_id, json) {
   return {
     type: RECEIVE_THREAD_STATS,
     stats: json,
+    thread_id,
+    receivedAt: Date.now()
+  };
+}
+
+export const REQUEST_THREAD_ACTIONS_ALL= 'REQUEST_THREAD_ACTIONS_ALL';
+export const RECEIVE_THREAD_ACTIONS_ALL= 'RECEIVE_THREAD_ACTIONS_ALL';
+
+export function fetchThreadActionsAll (thread_id) {
+  return (dispatch) => {
+    dispatch(requestThreadActionsAll(thread_id));
+    return fetch(`http://localhost:3003/facebook/threads/${thread_id}/actions/all`)
+      .then((response) => response.json())
+      .then((json) => dispatch(receiveThreadActionsAll(thread_id, json)));
+  };
+}
+
+function requestThreadActionsAll (thread_id) {
+  return {
+    type: REQUEST_THREAD_ACTIONS_ALL,
+    thread_id
+  };
+}
+
+function receiveThreadActionsAll (thread_id, json) {
+  if ('error' in json) {
+    json = null;
+  }
+  return {
+    type: RECEIVE_THREAD_ACTIONS_ALL,
+    actions_all: json,
     thread_id,
     receivedAt: Date.now()
   };

@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import NVD3Chart from 'react-nvd3';
+import ThreadActionList from './ThreadActionList';
 // import d3 from 'd3';
 export default class FacebookThreadView extends Component {
   componentDidMount () {
@@ -11,6 +12,8 @@ export default class FacebookThreadView extends Component {
     const threadObj = this.props.thread ? this.props.thread[this.props.thread_id] : null;
     let messages = threadObj && threadObj.messages ? threadObj.messages : [];
     let counts = threadObj && threadObj.stats ? threadObj.stats.counts : {};
+    // let actions_all = threadObj && threadObj.actions_all ? threadObj.actions_all.actions_all : {};
+    let actionsAll = threadObj && threadObj.actions_all ? threadObj.actions_all.actions_all : [];
 
     let data1 = [];
     for(let c in counts) {
@@ -72,6 +75,8 @@ export default class FacebookThreadView extends Component {
         <button onClick={this.props.loadData}>Reload Data</button>
         <button onClick={this.props.queueThreadDownload}>Queue Download</button>
 
+
+        <ThreadActionList actions={actionsAll}/>
         <div><pre>{JSON.stringify(threadObj ? threadObj.stats : [] , null, 2) }</pre></div>
 
 
