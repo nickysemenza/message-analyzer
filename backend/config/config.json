@@ -4,7 +4,12 @@
     "password": "root",
     "database": "chats_dev",
     "host": "127.0.0.1",
-    "dialect": "mysql"
+    "dialect": "mysql",
+    "define": {
+      "charset": "utf8mb4",
+      "collate": "utf8mb4_unicode_ci",
+      "timestamps": false
+    }
   },
   "test": {
     "username": "root",
