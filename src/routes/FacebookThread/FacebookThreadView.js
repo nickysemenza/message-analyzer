@@ -12,7 +12,6 @@ export default class FacebookThreadView extends Component {
     const threadObj = this.props.thread ? this.props.thread[this.props.thread_id] : null;
     let messages = threadObj && threadObj.messages ? threadObj.messages : [];
     let counts = threadObj && threadObj.stats ? threadObj.stats.counts : {};
-    // let actions_all = threadObj && threadObj.actions_all ? threadObj.actions_all.actions_all : {};
     let actionsAll = threadObj && threadObj.actions_all ? threadObj.actions_all.actions_all : [];
 
     let data1 = [];
@@ -54,11 +53,11 @@ export default class FacebookThreadView extends Component {
       sizePerPageList: [ {
         text: '10', value: 10
       }, {
-        text: '50', value: 500
+        text: '50', value: 50
       },{
         text: '500', value: 500
       } ], // you can change the dropdown list for size per page
-      sizePerPage: 10  // which size per page you want to locate as default
+      sizePerPage: 50  // which size per page you want to locate as default
       // pageStartIndex: 0, // where to start counting the pages
       // paginationSize: 3,  // the pagination bar size.
       // prePage: 'Prev', // Previous page button text
@@ -70,26 +69,25 @@ export default class FacebookThreadView extends Component {
     };
 
     return (<div>
-        <h1>Viewing thread {this.props.thread_id}</h1>z
-        {messages.length}
+        <h1>Viewing thread {this.props.thread_id}</h1>
         <button onClick={this.props.loadData}>Reload Data</button>
         <button onClick={this.props.queueThreadDownload}>Queue Download</button>
 
-
+        <h2>Thread Actions</h2>
         <ThreadActionList actions={actionsAll}/>
         <div><pre>{JSON.stringify(threadObj ? threadObj.stats : [] , null, 2) }</pre></div>
 
 
-        <NVD3Chart
-          tooltip={false}
-          id="charta"
-          width={900}
-          height={700}
-          type="multiBarChart"
-          datum={datum}
-          x="label"
-          y="value"
-        />
+        {/*<NVD3Chart*/}
+          {/*tooltip={false}*/}
+          {/*id="charta"*/}
+          {/*width={900}*/}
+          {/*height={700}*/}
+          {/*type="multiBarChart"*/}
+          {/*datum={datum}*/}
+          {/*x="label"*/}
+          {/*y="value"*/}
+        {/*/>*/}
         {/*          xAxis={{tickFormat: function(d) { return d3.time.format('%b %d %y')(new Date(d)); }}}*/}
 
 
@@ -105,7 +103,7 @@ export default class FacebookThreadView extends Component {
         />
 
         <BootstrapTable data={messages} striped={true} hover={true} pagination options={options}>
-          <TableHeaderColumn dataField="id" width="40" isKey={true} dataSort={true}>ID</TableHeaderColumn>
+          <TableHeaderColumn dataField="id" width="90" isKey={true} dataSort={true}>ID</TableHeaderColumn>
           <TableHeaderColumn dataField="thread_id" width="200" dataSort={true}>Thread ID</TableHeaderColumn>
           <TableHeaderColumn dataField="sender_name" width="250" dataSort={true}>Sender Name</TableHeaderColumn>
           <TableHeaderColumn dataField="body" width="400" dataSort={true}>Message</TableHeaderColumn>

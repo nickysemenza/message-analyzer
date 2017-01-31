@@ -37,19 +37,19 @@ function processAttachments() {
             // console.log(attachments.length+ " attachments");
             let all = attachments.map((att, index) => utils.saveAttachment(msg.message_id, msg.thread_id, msg.sender_id, index, att));
             Promise.all(all).then(() => {
-              resolve()
+              resolve();
             });
           } else {
             resolve();
           }
-        })
+        });
       });
       Promise.all(messagesPromises).then(() => {
         resolve();
-      })
+      });
     });
 
-  })
+  });
 }
 
 function downloadAllAttachments() {
@@ -69,7 +69,7 @@ function downloadAllAttachments() {
               request(attachment.url)
                 .on('error', (e) => {
                   console.log("fail", attachment.id, e);
-                  resolve(e)
+                  resolve(e);
                 })
                 .pipe(fs.createWriteStream(filename))
                 .on('close', () => {
@@ -80,7 +80,7 @@ function downloadAllAttachments() {
                       resolve();
                     });
                 }, Math.sqrt(index * 1000000));//((index*100000)^(1/2))/1000  -> seconds, so up to ~25 for 5000 rows
-            })
+            });
           } else
             resolve();
         });
@@ -115,12 +115,12 @@ function hashAttachmentFiles() {
                 resolve();
               });
           }).catch((hash_error) => {
-            resolve(hash_error)
+            resolve(hash_error);
           });
-        })
+        });
       });
       Promise.all(hashing).then(() => {
-        resolveM()
+        resolveM();
       });
     });
   });

@@ -57,7 +57,7 @@ export default class ThreadActionList extends Component {
               body = <div><p>{value.changed_by} set the title to {value.name} on {action.date}</p></div>;
               break;
         }
-       return <div key={key}>{body}</div>
+       return <div key={key}>{body}</div>;
       }
     );
 
@@ -76,7 +76,6 @@ export default class ThreadActionList extends Component {
         </CheckboxGroup>
         <hr/>
         {a}
-        {/*<div><pre>{JSON.stringify(this.props.actions , null, 2) }</pre></div>*/}
       </div>
     );
   }

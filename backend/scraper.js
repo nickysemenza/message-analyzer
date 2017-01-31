@@ -3,7 +3,7 @@
 let login = require("facebook-chat-api");
 let fs    = require("fs");
 let utils = require('./utils');
-let emoji = require('node-emoji')
+let emoji = require('node-emoji');
 let kue = require('kue')
   , queue = kue.createQueue();
 
@@ -24,7 +24,7 @@ login({appState: JSON.parse(fs.readFileSync('appstate.json', 'utf8'))}, (err, ap
           emoji.get('white_check_mark')+'  thread list updated\n' +
           emoji.get('white_check_mark')+'  thread names hinted');
         done();
-      })
+      });
     });
   });
 

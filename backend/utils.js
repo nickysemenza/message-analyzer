@@ -231,7 +231,7 @@ function getNameFromFacebookID(facebook_id) {
       where: {facebook_id}
     })
       .then(user => {resolve(user.full_name);})
-      .catch(e => {resolve("error"+facebook_id)});
+      .catch(e => {resolve("error"+facebook_id);});
   });
 }
 
