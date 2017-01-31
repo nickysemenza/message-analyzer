@@ -341,4 +341,5 @@ module.exports = {
   downloadAllThreads,
   updateThreadHistory,//used by scraper.js, main entry
   saveAttachment,
+  getNameFromFacebookID,
 };
