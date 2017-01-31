@@ -177,6 +177,7 @@ function updatePeopleList(api) {
     connection.query('SELECT * FROM facebook_threads', (err, rows, fields) => {
       if (err) throw err;
       let other_thread_participants = [];
+      other_thread_participants.push(api.getCurrentUserID());
       for (let i in rows) {
         let each = rows[i];
         let people = JSON.parse(each.participant_ids);
@@ -228,7 +229,9 @@ function getNameFromFacebookID(facebook_id) {
   return new Promise((resolve, reject) => {
     models.FacebookUser.find({
       where: {facebook_id}
-    }).then(user => {resolve(user.full_name);});
+    })
+      .then(user => {resolve(user.full_name);})
+      .catch(e => {resolve("error"+facebook_id)});
   });
 }
 
