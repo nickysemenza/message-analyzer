@@ -32,11 +32,20 @@ router.get('/:thread_id/messages', (req, res) => {
 });
 
 router.get('/:thread_id/download', (req, res) => {
+  if(req.params.thread_id=="all") {
+    let job = queue.create('thread-list-update')
+      .save( (err) => {
+        if( !err ) res.send({status: 'ok', job_id: job.id});
+      });
+  }
+  else
+  {
     let job = queue.create('thread-download', {
       thread_id: req.params.thread_id})
       .save( (err) => {
-      if( !err ) res.send({status: 'ok', job_id: job.id});
-    });
+        if( !err ) res.send({status: 'ok', job_id: job.id});
+      });
+  }
 });
 
 router.get('/:thread_id/stats', (req, res) => {

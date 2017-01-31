@@ -10,24 +10,26 @@ let kue = require('kue')
 login({appState: JSON.parse(fs.readFileSync('appstate.json', 'utf8'))}, (err, api) => {
     if(err) return console.error(err);
 
-    if(true) {
+  queue.process('thread-list-update', (job, done) => {
       //update the 3 people and threads table
-      Promise.all([
-        utils.updateFriendsList(api),
-        utils.updatePeopleList(api),
-        utils.updateThreadsList(api)
-      ]).then(a=>{
-        console.log(a);
-        utils.hintThreadNames().then(()=> {
-          console.log(
-            emoji.get('white_check_mark')+'  friends and people list updated\n' +
-            emoji.get('white_check_mark')+'  thread list updated\n' +
-            emoji.get('white_check_mark')+'  thread names hinted');
-        })
-      });
-    }
+    Promise.all([
+      utils.updateFriendsList(api),
+      utils.updatePeopleList(api),
+      utils.updateThreadsList(api)
+    ]).then(a=>{
+      console.log(a);
+      utils.hintThreadNames().then(()=> {
+        console.log(
+          emoji.get('white_check_mark')+'  friends and people list updated\n' +
+          emoji.get('white_check_mark')+'  thread list updated\n' +
+          emoji.get('white_check_mark')+'  thread names hinted');
+        done();
+      })
+    });
+  });
 
-    //now to tackle the messages
+
+  //now to tackle the messages
     // utils.updateThreadHistory(api, "869042309831501").then(a=>{console.log('thread updated',a);}).catch(a=>console.log('oops',a));
 
     queue.process('thread-download', (job, done) => {
