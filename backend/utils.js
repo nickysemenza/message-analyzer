@@ -4,10 +4,10 @@ const models = require('./models');
 const bluebird = require('bluebird');
 let Promise = require('bluebird');
 
-let redis = require("redis"),
-  client = redis.createClient();
+let redis = require("redis");
 bluebird.promisifyAll(redis.RedisClient.prototype);
 bluebird.promisifyAll(redis.Multi.prototype);
+let client = redis.createClient();
 
 require('dotenv').config({
   path: '../.env'
@@ -278,11 +278,8 @@ function updateUserMessageCounts() {
 
       });
 
-      let p = [];
-      for(let key in counts) {
-        p.push(client.hsetAsync("thread:"+key, ["stats", JSON.stringify(counts[key])]));
-      }
-      Promise.all(p).then(()=>{resolve();});
+      let p = Object.keys(counts).map(key=>client.hsetAsync("thread:" + key, ["stats", JSON.stringify(counts[key])]));
+      Promise.all(p).then(()=>{resolve();}).catch((e)=>{console.log(e); resolve(e);});
     });
   });
 }
