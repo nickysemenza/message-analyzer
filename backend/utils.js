@@ -142,7 +142,7 @@ function saveThreadMessage(each) {
   return new Promise((resolve, reject) => {
     let dbdata = {
       sender_name: each.senderName,
-      sender_id: each.senderID,
+      sender_id: each.senderID.includes("fbid") ? each.senderID.substr(5) : each.senderID,
       body: each.body,
       thread_id: each.threadID,
       message_id: each.messageID,

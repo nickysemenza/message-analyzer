@@ -18,11 +18,13 @@ login({appState: JSON.parse(fs.readFileSync('appstate.json', 'utf8'))}, (err, ap
       utils.updateThreadsList(api)
     ]).then(a=>{
       console.log(a);
-      utils.hintThreadNames().then(()=> {
+      Promise.all([utils.hintThreadNames(),utils.updateFacebookThreadStats()  ]).then(()=> {
         console.log(
           emoji.get('white_check_mark')+'  friends and people list updated\n' +
           emoji.get('white_check_mark')+'  thread list updated\n' +
-          emoji.get('white_check_mark')+'  thread names hinted');
+          emoji.get('white_check_mark')+'  thread names hinted\n' +
+          emoji.get('white_check_mark')+'  downloaded counts updated\n' +
+          emoji.get('white_check_mark')+'  user message counts updated');
         done();
       });
     });

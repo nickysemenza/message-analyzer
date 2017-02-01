@@ -50,7 +50,7 @@ function processThreadActions() {
           if (d.added_participants != null) {
             type = "added_participants";
             //todo...[0]
-            utils.getNameFromFacebookID(d.added_participants[0].substr(5)).then(user => {
+            utils.getNameFromFacebookID(d.added_participants[0]).then(user => {
               data = pushToKeyWithTS(data, thread_id, type,
                 {
                   added: user,
@@ -61,7 +61,7 @@ function processThreadActions() {
           }
           else if (d.removed_participants != null) {
             type = "removed_participants";
-            utils.getNameFromFacebookID(d.removed_participants[0].substr(5)).then(user => {
+            utils.getNameFromFacebookID(d.removed_participants[0]).then(user => {
               data = pushToKeyWithTS(data, thread_id, type,
                 {
                   removed: user,
