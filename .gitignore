@@ -43,3 +43,4 @@ dist
 .env
 appstate.json
 backend/images
+backend/config/config.json
