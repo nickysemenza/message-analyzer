@@ -4,27 +4,27 @@
  * Module dependencies.
  */
 
-var app = require('../app');
-var debug = require('debug')('express-sequelize');
-var http = require('http');
-var models = require('../models');
+let app = require('../app');
+let debug = require('debug')('express-sequelize');
+let http = require('http');
+let models = require('../models');
 
 /**
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || '3003');
+let port = normalizePort(process.env.PORT || '3003');
 app.set('port', port);
   /**
    * Create HTTP server.
    */
-var server = http.createServer(app);
+let server = http.createServer(app);
 
-models.sequelize.sync().then(function() {
+models.sequelize.sync().then(() => {
   /**
    * Listen on provided port, on all network interfaces.
    */
-  server.listen(port, function() {
+  server.listen(port, () => {
     debug('Express server listening on port ' + server.address().port);
   });
   server.on('error', onError);
@@ -36,7 +36,7 @@ models.sequelize.sync().then(function() {
  */
 
 function normalizePort(val) {
-  var port = parseInt(val, 10);
+  let port = parseInt(val, 10);
 
   if (isNaN(port)) {
     // named pipe
@@ -60,7 +60,7 @@ function onError(error) {
     throw error;
   }
 
-  var bind = typeof port === 'string'
+  let bind = typeof port === 'string'
     ? 'Pipe ' + port
     : 'Port ' + port;
 
@@ -84,8 +84,8 @@ function onError(error) {
  */
 
 function onListening() {
-  var addr = server.address();
-  var bind = typeof addr === 'string'
+  let addr = server.address();
+  let bind = typeof addr === 'string'
     ? 'pipe ' + addr
     : 'port ' + addr.port;
   debug('Listening on ' + bind);

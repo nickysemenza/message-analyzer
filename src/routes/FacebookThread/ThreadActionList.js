@@ -11,9 +11,6 @@ const items = ['change_thread_icon',
   'change_thread_nickname'];
 
 export default class ThreadActionList extends Component {
-  componentWillMount = () => {
-    this.state.fruits = items;
-  };
   constructor(props) {
     super(props);
     let set = new Set();
@@ -22,6 +19,9 @@ export default class ThreadActionList extends Component {
       selectedCheckboxes: set
     };
   }
+  componentWillMount = () => {
+    this.setState({fruits: items});//todo: make sure this works
+  };
   fruitsChanged =(newFruits) => {
     this.setState({
       fruits: newFruits
