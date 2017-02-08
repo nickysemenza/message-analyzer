@@ -9,9 +9,7 @@ bluebird.promisifyAll(redis.RedisClient.prototype);
 bluebird.promisifyAll(redis.Multi.prototype);
 let client = redis.createClient();
 
-require('dotenv').config({
-  path: '../.env'
-});
+require('dotenv').config();
 
 let connection = mysql.createConnection({
   host: process.env.mysql_host,
