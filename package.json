@@ -21,7 +21,7 @@
     "remove-dist": "rimraf ./dist",
     "prebuild": "npm run clean-dist && npm run lint && npm run test",
     "build": "babel-node tools/build.js && npm run open:dist",
-    "test": "mocha tools/testSetup.js src/**/*.spec.js --reporter progress",
+    "test": "mocha tools/testSetup.js src/**/*.spec.js",
     "test:cover": "babel-node node_modules/isparta/bin/isparta cover --root src --report html mocha -- --require ./tools/testSetup.js src/**/*.spec.js --reporter progress",
     "test:cover:travis": "babel-node node_modules/isparta/bin/isparta cover --root src --report lcovonly mocha -- --require ./tools/testSetup.js src/**/*.spec.js && cat ./coverage/lcov.info | node_modules/coveralls/bin/coveralls.js && npm run codecov",
     "test:watch": "npm run test -- --watch",
@@ -29,7 +29,8 @@
     "analyze-bundle": "babel-node ./tools/analyzeBundle.js",
     "codecov": "cat ./coverage/lcov.info | codecov",
     "kue": "kue-dashboard -p 3050",
-    "redis-commander": "redis-commander"
+    "redis-commander": "redis-commander",
+    "backend": "nodemon backend/bin/www.js"
   },
   "author": "Nicky Semenza",
   "license": "MIT",
@@ -48,6 +49,7 @@
     "morgan": "^1.7.0",
     "mysql": "^2.11.1",
     "node-emoji": "^1.5.1",
+    "nodemon": "^1.11.0",
     "object-assign": "4.1.0",
     "react": "15.4.1",
     "react-bootstrap": "^0.30.7",
