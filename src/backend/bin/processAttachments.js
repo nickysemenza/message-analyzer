@@ -4,24 +4,45 @@ let utils = require('.././utils');
 let fs = require('fs');
 let request = require('request');
 const md5File = require('md5-file/promise');
-
+const bluebird = require('bluebird');
+let redis = require("redis");
+bluebird.promisifyAll(redis.RedisClient.prototype);
+bluebird.promisifyAll(redis.Multi.prototype);
+let client = redis.createClient();
 //
 // hashAttachmentFiles().then(() => {
 //   console.log("all attachments hashed")
 // });
-processAttachments().then(()=>{
-  console.log("all attachments processed");
-  downloadAllAttachments().then(()=>{
-    console.log("all attachments downloaded");
-    hashAttachmentFiles().then(() => {
-      console.log("all attachments hashed");
-      console.log("YAY");
+// processAttachments().then(()=>{
+//   console.log("all attachments processed");
+//   downloadAllAttachments().then(()=>{
+//     console.log("all attachments downloaded");
+//     hashAttachmentFiles().then(() => {
+//       console.log("all attachments hashed");
+//       console.log("YAY");
+//     });
+//   });
+//
+// });
+
+updateAttachmentCounts();
+
+function updateAttachmentCounts() {
+  return new Promise((resolve, reject) => {
+    let counts = {};
+    const countsQuery = 'select thread_id, count(*) as count from facebook_attachments group by thread_id';
+    models.sequelize.query(countsQuery).spread((results) => {
+      // console.log(results);
+      results.forEach(r=>{
+        counts[r.thread_id] = r.count;
+      });
+      console.log(counts);
+      let p = Object.keys(counts).map(key=>client.hsetAsync("thread:" + key, ["attachment-count", counts[key]]));
+      Promise.all(p).then(()=>{resolve();}).catch((e)=>{console.log(e); resolve(e);});
     });
+
   });
-
-});
-
-
+}
 
 
 function processAttachments() {
